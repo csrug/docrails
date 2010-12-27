@@ -29,39 +29,39 @@ Volně dostupné i placené zdroje v češtině jsou zastaralé nebo neadekvátn
 
 h3. Co jsou Rails?
 
-Rails jsou webový aplikační vývojový framework napsaný v jazyce Ruby. Je navržen tak, aby zjednodušil programování webových aplikací tím, že činí předpoklad o tom, co každý vývojář potřebuje aby začal. Umožňuje vám psát méně kódu a zároveň dosáhnout více než v mnoha jiných jazycích a frameworcích. Zkušení Rails vývojáři také říkají, že Rails dělají vývoj webových aplikací zábavnějším.
+Ruby On Rails je framework pro vývoj webových aplikací napsaný v jazyce Ruby. Je navržen tak, aby usnadnil programování webových aplikací na základě obecných předpokladů vývoje pro web. Umožňuje vám psát méně kódu a zároveň dosáhnout více než v mnoha jiných jazycích a platformách. Pokročilejší Rails vývojáři také často říkají, že programovat webové aplikace v Rails je mnohem zábavnější.
 
-Rails jsou umíněný software. Činí předpoklady, že existuje "nejlepší" způsob dělání věcí a jsou navrženy aby takový způsob podporovaly - a v některých případech odrazovaly od alternativních způsobů. Pokud se naučíte "Rails přístup", pravděpodobně pocítíte výrazný nárúst produktivity. Pokud budete trvat na přenášení si starých zvyků z jiných jazyků a budete se pokoušet aplikovat postupy naučené jinde, váš zážitek může být poněkud méně veselý.
+Rails jsou docela „umíněný“ software. Mají za to, že existuje něco jako „nejlepší přístup“ a snaží se k tomuto přístupu své uživatele vést — ba je v některých případech od jiných přístupů i odrazovat. Pokud si tento „Rails přístup“ osvojíte, pravděpodobně zjistíte, že jste mnohem produktivnější. Pokud budete trvat na starých návycích získaných v jiných jazycích nebo platformách, a budete se tyto způsoby snažit přenést do vývoje v Rails, programování vás asi tolik bavit nebude.
 
-Filozofie Rails zahrnuje několik navádějících principů:
+Filosofie Rails obsahuje několik vůdčích principů:
 
-* DRY - "Don't repeat yourself" = neopakujte se - naznačuje, že psát stejný kód stále dokola je špatně.
-* Konvence nad konfigurací - znamená, že Rails činí předpoklady o tom, co chcete udělat a jak to chcete udělat, místo aby vás nutily specifikovat každou jednu věc v nekonečných konfiguračních souborech.
-* REST je nejlepší vzorec pro webové aplikace - uspořádávat vaši aplikaci kolem zdrojů a standardních HTTP příkazů je nejrychlejší způsob.
+* DRY — „Don't repeat yourself“ aneb „neopakujte se“ — znamená, že psát stejný kód stále dokola je špatné a dobrý kód je „znovupoužitelný“
+* Konvence má přednost před konfigurací — znamená, že Rails předpokládají co asi chcete udělat a jak to chcete udělat, místo aby vás nutily specifikovat každou drobnost v nekonečném množství konfiguračních souborů
+* REST je nejlepší architektonický vzor pro webové aplikace — znamená, že uspořádat webovou aplikaci jako soubor „zdrojů“ (_resources_) a standardních HTTP „sloves“ (_verbs_) je nejsnazší a nejrychlejší způsob, jak modelovat entity a jejich vztahy
 
 h4. Architektura MVC
 
-V srdci Rails je ukotvena architektura Model, View, Controller, obvykle označována jen jako MVC. Výhody MVC jsou například:
+Ruby on Rails obsahují ve svém jádru architekturu Model, View, Controller, obvykle označovanou jako MVC. Mezi výhody MVC patří:
 
 * oddělení aplikační logiky od uživatelského rozhraní
-* jednoduchost udržování kódu bez opakovaných součástí (DRY code)
-* ujasnění kam různé části kódu patří, kvůli snadnější údržbě
+* znovupoužitelnost kódu
+* přehledná struktura kódu aplikace, která usnadňuje údržbu
 
-h5. Models (modely)
+h5. Modely (_models_)
 
-Model reprezentuje informace (data) aplikace and pravidla pro práci s nimi. V případě Rails jsou modely užívány zejména pro správu pravidel interakce s příslušnou databázovou tabulkou. Ve většině případů bude jedna tabulka v databázi odpovídat jednomu modelu vaší aplikace. Kus vaší aplikační logiky bude koncentrován v modelu. 
+Model reprezentuje informace (data) ve vaší aplikaci a pravidla pro práci s nimi. V případě Rails jsou modely primárně využívány pro interakci s příslušnou tabulkou v databázi a pro ukládání pravidel této interakce. Ve většině případů odpovídá jedna tabulka v databázi jednomu modelu ve vaší aplikaci. Modely obsahují většinu aplikační logiky.
 
-h5. Views (pohledy)
+h5. Pohledy (_views_)
 
-Views reprezentují uživatelské rozhraní vaší aplikace. V rails jsou views obvykle HTML soubory s vloženým Ruby kódem, který provádí úkony související čistě s přezentací dat. Views mají na starosti poskytovat data webovému prohlížeči nebo jinému nástroji použitému k zasílání požadavků vaší aplikaci.
+Pohledy, neboli anglicky _views_ reprezentují uživatelské rozhraní vaší aplikace. V Rails jsou _views_ obvykle HTML soubory s vloženými částmi Ruby kódu, který provádí pouze úkony týkající se prezentace dat. _Views_ mají na starosti poskytování dat webovému prohlížeči nebo jinému nástroji, který zasílá vaší aplikaci požadavky.
 
-h5. Controllers (řadiče)
+h5. Kontrollery (_controllers_)
 
-Controllery tvoří "lepidlo" mezi modely a views. V Rails jsou controllery zodpovědná za zpracování příchozích požadavků z webového prohlížeče, získávání dat z modelů a odesílání těchto dat do views k jejich zobrazení.  
+Kontrollery fungují jako „lepidlo“ mezi modely a _views_. V Rails slouží kontrollery k zpracování požadavků které přichází z webového prohlížeče, získávání dat z modelů a k odesílání těchto dat do _views_, kde budou zobrazeny.
 
-h4. Komponenty Rails
+h4. Součásti Rails
 
-Rails jsou poskládány z mnoha jednotlivých komponent.
+Rails nejsou monolitický framework, ale jsou poskládány z mnoha dílčích součástí:
 
 * Action Pack
   ** Action Controller
@@ -74,61 +74,63 @@ Rails jsou poskládány z mnoha jednotlivých komponent.
 * Active Support
 * Railties
 
+Následující kapitoly stručně popisují jejich úlohu.
 
 h5. Action Pack
 
-Action Pack je jediný gem, který obsahuje Action Controller, Action Dispatch a Action View. Je to VC část MVC.
+Action Pack je gem, který obsahuje Action Controller, Action Dispatch a Action View. Je to „VC“ část z MVC.
 
 h5. Action Controller
 
-Action Controller je komponenta, která má na starosti controllery v Rials aplikaci. Action Controller framework zpracovává příchozí požadavky v Rails aplikaci, vytahuje z nich parametry a rozesílá je příslučným akcím. Služby poskytované Action Controllerem zahrnují správu relací (sessions), vykreslování šablon a správu přesměrování.     
+Action Controller je komponenta, která má na starosti kontrollery v Rails aplikaci. Zpracovává příchozí požadavky, extrahuje z nich parametry a směruje je na příslušnou „akci“ v příslušném kontrolleru. Poskytuje podporu pro _sessions_, renderování šablon a přesměrování.
 
 h5. Action View
 
-Action View má na startosti views vaší Rails aplikace. Umí v základu vytvořit výstup jak v HTML tak v XML. Action View řídí vykreslování šablon, včetně vnořených a parciálních šablon, a obsahuje zabudovanou podporu AJAXu.    
+Action View má na starosti views ve vaší aplikaci. Ve výchozím nastavení umí poskytovat výstup v HTML a XML. Řídí renderování šablon, včetně šablon vnořených a parciálních, a obsahuje zabudovanou podporu pro Ajax.
 
 h5. Action Dispatch
 
-Action Dispatch zpracovává směrování příchozích požadavků a rozesílá je tam kam chcete, buďto do vaší aplikace anebo do jakékoliv jiné Rack aplikace.
+Action Dispatch zpracovává směrování příchozích požadavků a posílá je tam, kam chcete: buď do vaší aplikace, nebo jakékoliv jiné Rack aplikace.
 
 h5. Action Mailer
 
-Action Mailer je framework pro tvorbu e-mailových služeb. Action Mailer můžete použít pro příjem a zpracování příchozích e-mailů a odesílání jednoduchých čistě textových anebo složitých multipart emailů na základě flexibilních šablon.
+Action Mailer poskytuje podporu pro práci s e-maily. Umožňuje rozesílat e-maily v _plaintextu_ nebo formátované _multipart_ e-maily s přílohami, a to na základě flexibilních šablon. Umožňuje vám ale také e-maily přijímat a zpracovávat.
 
 h5. Active Model
 
-Active Model poskytuje definované rozhraní mezi službami gemu Action Pack a ORM gemy (Object Relational Mapping - objektově relační mapování) jako například Active Record. Active Model umožňuje Rails využívat jiné ORM frameworky místo Active Recordu, pokud to vaše aplikace potřebuje.
+Active Model definuje rozhraní mezi službami součástí Action Pack a vrstvami tzv. ORM (_Object Relational Mapping_, objektově relační mapování). Jednou z takových vrstev je i Active Record. Active Model umožňuje v Rails používat jiné ORM technologie pro práci s relační databází (např. DataMapper), ale rovněž nerelační databáze jako MongoDB nebo CouchDB.
 
 h5. Active Record
 
-Active Record je základem pro modely v Rails aplikaci. Umožňuje mimo jiné nezávislost na databázi, základní CRUD (create,read,update,delete - vytvořit, načíst, upravit, smazat) funkcionalitu, pokročilé vyhledávací schopnosti, a schopnost specifikovat vztahy (relace) mezi modely.
+Active Record je základem pro modely v Rails aplikaci. Poskytuje mimo jiné nezávislost na SQL dialektu konkrétní databáze, základní operace pro získávání, vytváření, editaci a mazání záznamů (tzv. CRUD, _Create Read Update Delete_), pokročilé získávání dat z databáze (operace typu JOIN, GROUP, aj.) a v neposlední řadě i možnost definovat vztahy mezi jednotlivými modely.
 
 h5. Active Resource
 
-Active Resource poskytuje rámec pro správu spojení mezi aplikační logikou a REST službami. Implementuje způsob mapování webových zdrojů na lokální objekty s CRUD sémantikou.
+Active Resource umožňuje propojit modely ve vaší aplikaci s webovou službou typu REST. Mapuje modely na vzdálené webové služby  umožňuje vám s nimi pracovat podobně jako by byly mapovány na databázi.
 
 h5. Active Support
 
-Active Support je rozsáhlá kolekce podpůrných funkcí a rozšíření základní knihovny Ruby, které jsou využívány v Rails jak interním kódem tak vašimi aplikacemi.
+Active Support je rozsáhlý soubor podpůrných funkcí a rozšíření základních tříd Ruby, které kromě kódu samotných Rails může využít i vaše aplikace.
 
 h5. Railties
 
-Railties jsou srdcem Rails kódu, který vytváří novou Rails aplikaci a propojuje jednotlivé frameworky a pluginy v rámci Rails aplikací.
+Railties jsou jádrem kódu Ruby On Rails, který umožňuje vygenerovat novou Rails aplikaci a propojuje jednotlivé frameworky a součásti dohromady.
 
 h4. REST
 
-REST je zkratka pro Representational State Transfer a je základem REST architektury. Ta je obecně považována za disertační práci Roye Fieldinga "Architektonické styly a navrhování architektury síťového software [anglicky]":http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm. Sice si můžete pročíst celou práci, ale v Rails se REST koncentruje do dvou hlavních principů:
+REST je zkratka pro _Representational State Transfer_ a je základem tzv. REST architektury. Za její manifest je obecně považována disertační práce Roye Fieldinga, "Architectural Styles and the Design of Network-based Software Architectures":http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm. Nemusíte ji číst celou — v Rails se REST architektura projevuje v podstatě těmito způsoby:
 
-* Používání identifikátorů zdrojů, jako například URL, pro reprezentaci zdrojů
-* Přenášení reprezentace stavu těchto zdrojů mezi systémovými komponentami.
+* vaši aplikaci tvoří určité *entity* („zdroje“), které lze jednoznačně identifikovat, typicky prostřednictvím jejich URL
+* vaše aplikace přenáší *reprezentace* stavu těchto entit mezi jednotlivými součástmi celého systému
 
-Například v Rails aplikaci bude požadavek typu 
+Uveďme příklad. V Rails aplikaci bude tento požadavek:
 
 <tt>DELETE /photos/17</tt>
 
-chápán jako odkazující na zdroj-fotografii s ID=17 a indikující požadovanou akci - smazání zdroje-fotografie. REST je přirozeným stylem architektury webových aplikací a Rails se jím řídí aby vás odstínily od mnohých komplexních problémů souvisejících s REST a podivností prohlížečů.
+interpretován jako *odkaz* na určitou entitu, v tomto případě _fotografii_, která má ID 17 a jako *pokyn* k určité akci: smazání této entity, tedy fotografie. Pro webové aplikace je REST zcela přirozená architektura, a Rails ji implementují takovým způsobem, že nemusíte vědět o mnoha komplexních problémech s ní spjatých, nebo s podivnou implementací HTTP v prohlížečích (např. to, že neznají HTTP metodu DELETE).
 
-Pokud by vás zajímalo více podrobností o REST jako architektonickém stylu, následující zdroje jsou snadněji stravitelné než Fieldingova disertace:
+
+Pokud by vás zajímalo více podrobností o REST jako architektonickém stylu, následující zdroje jsou stravitelnější než Fieldingova disertace:
 
 * "A Brief Introduction to REST [anglicky]":http://www.infoq.com/articles/rest-introduction od Stefana Tilkova
 * "An Introduction to REST [anglicky]":http://bitworking.org/news/373/An-Introduction-to-REST (video tutorial) od Joe Gregoria
