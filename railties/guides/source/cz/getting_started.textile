@@ -1,34 +1,31 @@
 h2. Začínáme s Rails
 
-Tento průvodce popisuje jak začít s Ruby on Rails. Po jeho přečtení byste měli chápat následující:
+Tento průvodce vám pomůže začít s Ruby on Rails. Až si jej přečtete, bude vám jasnější:
 
 * Instalace Rails, vytvoření nové Rails aplikace a propojení aplikace s databází
 * Obecná struktura Rails aplikace
-* Základní principy MVC (Model, View, Controller) a designu založeného na REST přístupu
-* Jak rychle vytvořit základní části Rails aplikace
+* Základní principy MVC (Model, View, Controller) a designu založeného na architektuře REST
+* Generování základních stavebních kamenů Rails aplikace
 
 endprologue.
 
-WARNING. Tento průvodce popisuje Rails verze 3.0. Některé části kódu zde uvedené nebudou fungovat v předchozích verzích Rails.
+WARNING. Tento průvodce popisuje Rails ve verzi 3.0. Některé části kódu zde uvedené nebudou fungovat v předchozích verzích.
 
-h3. Předpoklady tohoto průvodce
+h3. Předpoklady
 
-Tento průvodce je navržen pro začátečníky, kteří chtějí začít s Rails aplikací od úplného začátku. Nepředpokládá že máte jakoukoliv předchozí zkušenost s Rails. Nicméně abyste z něj vytěžili co nejvíce, potřebujete mít nainstalovány některé náležitosti:
+Tento průvodce je zamýšlen pro začátečníky, kteří chtějí začít s Rails aplikací od úplného začátku. Nepředpokládá žádnou předchozí zkušenost s Rails. Abyste z něj ale vytěžili co nejvíce, měli byste si nainstalovat následující:
 
-* Jazyk "Ruby":http://www.ruby-lang.org/en/downloads verze 1.8.7 nebo vyšší
-
-TIP: Ruby 1.8.7 p248 a p249 obsahují chybu, která shazuje Rails 3.0. Ruby Enterprise Edition ale mají tuto chybu opravenu od verze 1.8.7-2010.02. Pokud jde o verzi 1.9, pak Ruby 1.9.1 není použitelné, protože okamžitě selhává při spojení s Rails 3.0, takže pokud chcete používat Rails 3 s verzí 1.9.x použijte 1.9.2 pro hladký průběh.
-
+* Jazyk "Ruby":http://www.ruby-lang.org/en/downloads ve verzi 1.8.7 nebo 1.9.2
 * Balíčkovací systém "RubyGems":http://rubyforge.org/frs/?group_id=126
 * Funkční instalaci databáze "SQLite3":http://www.sqlite.org
 
-Rails je webový aplikační framework bežící na programovacím jazyku Ruby. Pokud nemáte žádnou předchozí zkušenost s Ruby, může pro Vás být náročnější ponořit se přímo do Rails. Na webu je několik dobrých bezplatných zdrojů k naučení základů jazyka Ruby, včetně následujících:
+Rails je framework pro tvorbu webových aplikací, využívající programovací jazyk Ruby. Pokud nemáte žádnou předchozí zkušenost s Ruby, může pro vás být náročné pustit se rovnou do Rails. Na webu je k dispozici mnoho volně dostupných zdrojů v angličtině, mimojiné:
 
-* "Mr. Neighborly's Humble Little Ruby Book [anglicky]":http://www.humblelittlerubybook.com
-* "Programming Ruby [anglicky]":http://www.ruby-doc.org/docs/ProgrammingRuby/
-* "Why's (Poignant) Guide to Ruby [anglicky]":http://mislav.uniqpath.com/poignant-guide/ 
-* "Ruby v příkladech [česky]":http://www.root.cz/serialy/ruby-v-prikladech/
-* "Ruby po kapkách [česky]":http://interval.cz/programovani/ruby/
+* "Ruby in Twenty Minutes":http://www.ruby-lang.org/en/documentation/quickstart/
+* "Programming Ruby":http://www.ruby-doc.org/docs/ProgrammingRuby/
+* "Rails for PHP Developers":http://railsforphp.com/reference
+
+Volně dostupné i placené zdroje v češtině jsou zastaralé nebo neadekvátní. Částečnou výjimku tvoří kniha "_Ruby - kompendium znalostí pro začátečníky i profesionály_":http://www.zonerpress.cz/kniha/pro-programatory/ruby-kompendium-znalosti-pro-zacatecniky-i-profesionaly od nakladatelství Zoner Press.
 
 h3. Co jsou Rails?
 
