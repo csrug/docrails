@@ -272,55 +272,57 @@ Ten vytvoří databáze SQLite3 pro vývojové a testovací prostředí v adres�
 
 TIP: Rake je obecným nástrojem pro spouštění konzolových příkazů, který Rails používají na mnoho různých věcí. Seznam dostupných  příkazů si zobrazíte spuštěním příkazu +rake -T+.
 
-h3. Ahoj Rails!
+h3. „Hello World!“ v Rails
 
-Jedním z tradičních způsobů, ja začít s novým programovacím jazykem je zobrazení krátkého textu na obrazovce. Abyste toho docílili, musíte spustit server Rails aplikace.
+Jedním z tradičních způsobů, ja začít s novým programovacím jazykem, je zobrazení krátkého textu na obrazovce. Abychom toho docílili, musíme spustit server Rails aplikace.
 
 h4. Spuštění webového serveru
 
-Ve skutečnosti už máte připravenou plně funkční Rails aplikaci. Abyste si ji zobrazili, musíte spustit webový server na vašem vývojovém počítači. Uděláte to následujícím příkazem:
+Ve skutečnosti už máte připravenou plně funkční Rails aplikaci! Abyste si ji zobrazili, musíte spustit webový server na vašem vývojovém počítači. Uděláte to následujícím příkazem:
 
 <shell>
 $ rails server
 </shell>
 
-Ve výchozím nastavení se spustí instance web serveru Mongrel (Rails mohou použít řadu jiných webových serverů). Pro zobrazení aplikace otevřete okno vášeho prohlížeče a jděte na stránku "http://localhost:3000":http://localhost:3000. Měli byste vidět základní informační stránku Rails:
+Ve výchozím nastavení se spustí webový server WEBrick (Rails mohou použít řadu jiných webových serverů, jako např. Phusion Passenger, Thin nebo Unicorn). Aplikaci si zobrazíte ve webovém prohlížeči na adrese "http://localhost:3000":http://localhost:3000. Uvidíte výchozí informační stránku Rails:
 
 !images/rails_welcome.png(Welcome Aboard screenshot)!
 
-TIP: Pro zastavení serveru zmáčkněte Ctrl+C v terminálovém okně, kde server běží. V development módu Rails obvykle nevyžadují zastavení serveru. Jakékoliv změny v souborech, které provedete, server automaticky načte.
+TIP: Server zastavíte stisknutím <tt>Ctrl+C</tt> v terminálovém okně, kde jste jej spustili. Při vývoji aplikace Rails až na výjimky nevyžadují zastavení nebo restart serveru. Jakékoliv změny v souborech, které provedete, server automaticky načte znovu.
 
-Stránka "Welcome Aboard" je jen _zkouška sirén_ pro novou Rails aplikaci: ujišťuje se, že máte vše správně nastaveno pro zobrazení stránky. Můžete táké přejít na odkaz _About your application's environment_ kde najdete shrnutí konfigurace vašeho aplikačního prostředí.
+Stránka „Welcome Aboard“ je jen „kouřový test“ pro novou Rails aplikaci: kontroluje, zda máte Rails nainstalované správně a umí zobrazit jednoduchou stránku. Můžete také kliknout na odkaz _About your application’s environment_, který zobrazí informace o vašem vývojovém prostředí (verze Rails, Ruby, apod.)
 
-h4. Rails, řekněte "Ahoj"
+h4. Rails, řekněte "Ahoj"!
 
-Aby Rails řekly "Ahoj", musíte vytvořit kontroler (controller) a pohled (view). Naštěstí toto můžete provést spuštěním jediného příkazu. Vložte tedy do terminálu:
+Aby Rails řekly „Ahoj“, musíte vytvořit minimálně kontroler (_controller_) a pohled (_view_). Naštěstí to můžete provést spuštěním jediného příkazu. V jiném okně nebo záložce terminálu tedy spusťte:
 
 <shell>
 $ rails generate controller home index
 </shell>
 
-TIP: Pokud používáte Windows, nebo máte Ruby nestandardně nainstalované, možná budete muset příkaz pustit s celou cestou k Rails: +ruby \path\to\rails controller home index+.
+TIP: Pokud používáte Windows, nebo máte Ruby nestandardně nainstalované, možná budete muset příkaz pustit s celou cestou ke skriptu Rails: <tt>ruby \path\to\your\application\script\rails generate controller home index</tt>.
 
-Rails pro Vás vytvoří několik souborů, včetně +app/views/home/index.html.erb+. Toto je šablona, která bude použita pro zobrazení výsledku akce (action) index v kontroleru (controller) home. Otevřete tento soubor v textovém editoru a upravte ho, aby obsahoval tuto jednoduchou řádku kódu:
+Vidíte, že generátor Rails vytvořil několik souborů, mimo jiné +app/views/home/index.html.erb+. Ten obsahuje šablonu, která bude použita pro zobrazení výsledku akce (_action_) +index+ v kontroleru +home+. Otevřete tento soubor v textovém editoru a upravte ho tak, aby obsahoval tuto řádku kódu:
 
 <code class="html">
-<h1>Ahoj Rails!</h1>
+<h1>Ahoj, Rails!</h1>
 </code>
 
 h4. Nastavení domovské stránky aplikace
 
-Nyní, když jsme vytvořili controller a view, ještě potřebujeme Rails říci, kdy se má "Ahoj, Rails" zobrazit. V našem případě chceme, aby se to zobrazilo na výchozí URL naší stránky, "http://localhost:3000":http://localhost:3000, namísto zkušební stránky "Welcome Aboard".
+Nyní, když jsme vytvořili kontroler a šablonu, musíme Rails říci, kdy se má text „Ahoj, Rails!“ zobrazit. V našem případě chceme, aby se zobrazil přímo na výchozí URL naší aplikace, tedy na "http://localhost:3000":http://localhost:3000, místo zkušební stránky „Welcome Aboard“.
 
-Prvním krokem je smazání základní stránky z vaší aplikace:
+Nejprve musíme smazat výchozí, statický soubor z adresáře +public+ naší aplikace:
 
 <shell>
 $ rm public/index.html
 </shell>
 
-Toto musíme udělat, jelikož Rails posílají jakýkoli statický obsah ze složky +public+ přednostně před dynamicky generovaným obsahem z controllerů.
+Musíme tak učinit proto, že Rails přednostně renderují statické soubory ze složky +public+ před dynamicky generovaným obsahem z kontrolerů.
 
-Nyní musíte Rails říci, kde se nachází skutečná domovská stránka. Otevřete soubor +config/routes.rb+ v textovém editoru. To je konfigurace cest (routes) aplikace, které jsou nastaveny speciálním DSL (domain-specific language). Díky tomu Rails ví, jak spojit příchozí požadavky s controllery a akcemi. Tento soubor obsahuje mnoho příkladů v zakomentovaných řádcích. Jeden z nich ukazuje, jak spojit domovskou stránku vaší aplikace s konkrétním controllerem a akcí. Najděte řádek začínající na +root :to+, odkomentujte ho a změňte následovně:
+Nyní musíme říct Rails, kde se nachází skutečná domovská stránka. Otevřete soubor +config/routes.rb+ v textovém editoru. Ten obsahuje pravidla směrování (_routes_) v aplikaci. Jsou definovány pomocí specializovaného mini-jazyka, „dialektu“ (DSL, _domain specific language_). Díky těmto pravidlům Rails vědí, jak propojit příchozí požadavky s kontrolery a jejich akcemi.
+
+Tento soubor obsahuje mnoho příkladů pravidel na zakomentovaných řádcích. Jeden z nich definuje pravidlo pro napojení domovské stránky aplikace na určitý kontroler a jeho akci. Najděte řádek začínající +root :to+, odkomentujte jej a změňte následovně:
 
 <ruby>
 Blog::Application.routes.draw do
@@ -331,11 +333,11 @@ Blog::Application.routes.draw do
   root :to => "home#index"
 </ruby>
 
-The +root :to => "home#index"+ říká Rails, že má požadavky směřované na "/" spojit s controllerem home a jeho akcí index.
+Deklarace +root :to => "home#index"+ říká Rails, že má požadavky na URL "/" směrovat na kontroler +home+ a jeho akci +index+.
 
-Pokud si nyní v prohlížeči zobrazíte "http://localhost:3000":http://localhost:3000, uvidíte +Ahoj, Rails!+.
+Pokud si nyní v prohlížeči zobrazíte stránku "http://localhost:3000":http://localhost:3000, uvidíte +Ahoj, Rails!+.
 
-NOTE. Více informací ohledně routování naleznete v "Rails Routing from the Outside In":routing.html.
+NOTE. Více informací ohledně směrování požadavků naleznete v návodu "Rails Routing from the Outside In":routing.html.
 
 h3. Rychlý start s použitím nástroje Scaffolding (lešení)
 
