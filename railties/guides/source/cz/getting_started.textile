@@ -137,83 +137,83 @@ Pokud by vás zajímalo více podrobností o REST jako architektonickém stylu, 
 * "Representational State Transfer [anglicky]":http://en.wikipedia.org/wiki/Representational_State_Transfer článek na Wikipedii
 * "How to GET a Cup of Coffee [anglicky]":http://www.infoq.com/articles/webber-rest-workflow od Jima Webbera, Savase Parastatidise & Iana Robinsona
 
-h3. Vytvoření nového Rails projektu
+h3. Vytvoření nové Rails aplikace
 
-Následováním této příručky, vytvoříte (velmi) jednoduchý <tt>blog</tt> v Rails. Předtím ale, než začneme vytvářet aplikaci, musíte se ujistit, že máte Rails správně nainstalované.
+V průběhu tohoto návodu společně vytvoříme kompletní Rails aplikaci, velmi jednoduchý weblog, nazvaný prostě: <tt>blog</tt>. Předtím než začneme se samotnou aplikací se ale musíme ujistit, že máte Rails správně nainstalované.
 
 h4. Instalace Rails
 
-Ve většině případů je nejjednodušší cestou pro nainstalování Rails využítí výhod RubyGems:
+Ve většině je nejjednodušší nainstalovat Ruby On Rails pomocí balíčkovacího systému RubyGems:
 
 <shell>
-Obvykle stačí spustit tento příkaz jako root:
-# gem install rails
+# Je možné, že tento příkaz budete muset spustit pomocí <tt>sudo</tt> jako _root_ uživatel
+$ gem install rails
 </shell>
 
-TIP. Pokud pracujete na Windows, mějte na vědomí, že velká většina Rails vývoje probíhá v Unixových systémech. I když samotné Ruby on Rails jdou nainstalovat snadno pomocí například "Ruby Installer":http://rubyinstaller.org/, podpůrný ekosystém často předpokládá, že je schopni zkompilovat rubygems na bázi C-jazyků a pracovat v příkazové řádce. Pokud je to možné, doporučujeme nainstalovat virtuální stroj s operačním systémem Linux a vyvíjet Rails v něm, místo používání Windows.
+TIP. Pokud pracujete na Windows, mějte na paměti, že drtivá většina Rails vývojářů používá systémy na bázi Unixu. I když samotné Ruby a Rails lze na Windows snadno nainstalovat například pomocí "Ruby Installer":http://rubyinstaller.org/, mnoho Ruby gemů předpokládá, že na vaší platformě lze zkompilovat kód v jazyce C a že umíte pracovat v příkazové řádce. Pokud je to pro vás jen trochu schůdné, doporučujeme vám nainstalovat si virtuální stroj s operačním systémem Linux a vyvíjet Rails aplikace v něm, místo na Windows.
 
-h4. Vytvoření aplikace Blog
+h4. Vytvoření aplikace
 
-Nejlepší cesta, jak používat tuto příručku je řídit se dle pokynů v ní. Nebyl vynechán jediný krok, nebo část kódu, který je pro vytvoření aplikace potřeba, takže ji můžete následovat krok za krokem. Pokud se potřebujete podívat na celý kód, můžete si ho stáhnout z "Getting Started Code":http://github.com/mikel/getting-started-code.
+Pokud chcete mít z tohoto návodu skutečný užitek, postupujte doslova krok za krokem. Nevynechali jsme žádný krok ani kousek kódu. Pokud si chcete prohlédnout celý kód, můžete si jej stáhnout z "Githubu":http://github.com/mikel/getting-started-code.
 
-Na začátku si otevřete terminál a jdetě do složky, kde máte práva vytvářet soubory a napište:
+Nejprve si otevřete terminál a napište:
 
 <shell>
 $ rails new blog
 </shell>
 
-Toto vytvoří Rails aplikaci nazvanou Blog ve složce s názvem blog.
+Tento příkaz vytvoří novou aplikaci nazvanou Blog ve složce s názvem <tt>blog</tt>.
 
-TIP: Můžete se podívat na všechny parametry, které generátor Rails aplikace přijímá zavoláním <tt>rails -h</tt>.
+TIP: Různé parametry, které můžete využít při generování Rails aplikací, si můžete vypsat příkazem <tt>rails new -h</tt>.
 
-Poté co vytvoříte aplikaci blog, přejděte do jejího adresáře pro pokračování s další prací:
+Poté aplikaci vygenerujte, přepněte se do jejího adresáře:
 
 <shell>
 $ cd blog
 </shell>
 
-Rails vytvoří složku v aktuálním adresáři pojmenovanou <tt>blog</tt>. Otevřete ji a prozkoumejte její obsah. Většina úkonů v tomto tutoriálu bude prováděna ve složce <tt>app/</tt>, ale zde je základní popis jednotlivých funkcí všech dalších složek, které Rails vytvoří s novou aplikací:
+Vidímě, že Rails generátor vytvořil v aktuálním adresáři složku pojmenovanou <tt>blog</tt>. Otevřete ji a prozkoumejte její obsah. V tomto návodu budeme většinou pracovat ve složce <tt>app/</tt>, ale zde je základní popis toho, co se skrývá v dalších složkách, které generátor s novou aplikací vytvoří.
 
 |_.Soubor/Složka|_.Účel|
-|Gemfile|Tento soubor vám umožní specifikovat jaké gemy potřebujete pro vaší Rails aplikaci.|
-|README.rdoc|Toto je stručný návod k aplikaci. Použijte ho, abyste ostatním řekli, co aplikace dělá, jak ji nastavit atd.|
-|Rakefile|Tento subor obsahuje dávkové úlohy, které je možné spustit z terminálu.|
-|app/|Obsahuje kontrolery (controllers), modely (models) a pohledy (views). Na tuto složku se budete soustředit po zbytek příručky.|
-|config/|Konfigurace běhu aplikace, cesty (routes), databáze a mnoho dalšího.|
-|config.ru|Rack konfigurace pro Rack servery používaná pro spuštění aplikace.|
-|db/|Aktuální schéma databáze a databázové migrace. Ty popíšeme záhy.|
-|doc/|Podrobná dokumentace pro vaší aplikaci|
-|lib/|Rozšiřující moduly pro vaší aplikaci (není dále popsáno v této příručce).|
-|log/|Aplikační log soubory.|
-|public/|Jediná složka, která je přístupná z venku. Zde se ukládájí obrázky, javascripty, styly (CSS) a další statické soubory.|
-|script/|Obsahuje skript rails, který spouští vaší aplikaci a může obsahovat další, které slouží například pro deploy.|
-|test/|Unit testy, fixtures a jiné testovací nástroje. Ty jsou popsány v "Testování Rails aplikací":testing.html|
+|Gemfile|Specifikace gemů (a případně jejich verzí), které vaše aplikace vyžaduje.|
+|README.rdoc|Návod k aplikaci. Zde popište, co vaše aplikace dělá, jak ji nainstalovat, nastavit, apod. Slouží též jako úvodní stránka vygenerované dokumentace (viz příkaz <tt>rake doc:app</tt>).|
+|Rakefile|Natahuje definice konzolových příkazů pro nástroj <tt>Rake</tt> (definované v Rails a ve vaší aplikaci).|
+|app/|Obsahuje kontrolery (_controllers_), modely (_models_) a pohledy (_views_).|
+|config/|Konfigurace aplikace, směrování požadavků (<tt>routes.rb</tt>), definice přístupových údajů k databázi a podobně.|
+|config.ru|Konfigurace pro spuštění aplikace prostřednictvím webových serverů využívajících rozhraní Rack.|
+|db/|Aktuální schéma databáze a databázové migrace.|
+|doc/|Podrobná dokumentace pro vaši aplikaci.|
+|lib/|Rozšíření a doplňkové soubory vyžadované vaší aplikací.|
+|log/|Logy aplikace.|
+|public/|Jediná složka, která je přístupná přes web. Obsahuje obrázky, JavaScript, stylové předpisy (CSS) a další statické soubory.|
+|script/|Obsahuje skript <tt>rails</tt>, který spouští vaši aplikaci ve vývojovém prostředí, generuje kód, spouští interaktivní konzoli aplikace, a podobně.|
+|test/|Jednotkové a funkční testy, testovací data a ostatní nástroje pro automatizované testování aplikace. Ty jsou popsány v návodu "Testing Rails Applications":testing.html|
 |tmp/|Dočasné soubory|
-|vendor/|Místo pro zdrojové soubory třetích stran. V typické Rails aplikaci to jsou například Ruby Gems, zdrojový kód Rails a pluginy rozšiřující funkcionalitu.|
+|vendor/|Místo pro zdrojové soubory třetích stran. V typické Rails aplikaci jsou to například gemy a pluginy rozšiřující funkce Rails, případně též zdrojový kód Rails.|
 
 h4. Instalování potřebných Gemů
 
-Rails aplikace v základu spravuje závislosti gemů pomocí "Bundleru":http://gembundler.com/v1.0/index.html. Protože nepotřebujeme jiné gemy, než ty, které jsou zahrnuty ve vygenerovaném +Gemfile+, můžeme přímo spustit
+Rails aplikace definuje gemy, které vyžaduje pro svůj běh pomocí nástroje "Bundler":http://gembundler.com/. Protože si vystačíme s těmi gemy, které jsou specifikovány ve vygenerovaném +Gemfile+, můžeme přímo spustit příkaz:
 
 <shell>
 bundle install
 </shell>
 
-pro jejich nainstalování.
+abychom je nainstalovali.
 
 h4. Konfigurace databáze
 
-Pravděpodobně každá vaše Rails aplikace bude komunikovat s databází. Jaká databaze se použije je nastaveno v konfiguračním souboru, +config/database.yml+. Pokud otevřete tento soubor v nové Rails aplikaci, uvidíte základní konfiguraci databáze používající SQLite3. Soubor obsahuje sekce pro tři rozdílná prostředí v kterých mohou být Rails v základu puštěny:
+Skoro všechny Rails aplikace komunikují s databází (i když to není žádnou podmínkou). To, jakou databázi Rails použijí, je nastaveno v konfiguračním souboru, +config/database.yml+. Pokud tento soubor otevřete, uvidíte výchozí konfiguraci používající SQLite3. Důležité je to, že konfigurace je od začátku nastavena pro tři různá prostředí, v nichž může být Rails aplikace spuštěna:
 
-* Prostředí +development+ je používáno na počítači, kde aplikaci vyvíjíte a pracujete s ní.
-* Prostředí +test+ je používáno pro automatizované testy.
-* Prostředí +production+ je používáno v momentě, kdy je aplikace nasazena na server a spuštěna pro reálné použítí.
+* Vývojové prostředí (+development+) používáme na svém počítači, když aplikaci vyvíjíme a pracujeme s ní.
+* Testovací prostředí (+test+) používají automatizované testy.
+* Produkční prostředí (+production)+ je používáno na serveru, kam svoji aplikaci nainstalujeme, abychom ji zpřístupnili ostatním.
 
 h5. Konfigurace databáze SQLite3
 
-Rails přicházejí s vestavěnou podporou pro "SQLite3":http://www.sqlite.org, což je lehká databáze nepotřebující server ke svému běhu. V produkci by ovšem mohla být snadno přetížena, proto je vhodá pro použítí při vývoji a testování. Rails aplikace je v základu vytvořena s nastavením pro SQLite, ale můžete to kdykoli později změnit.
+Rails obsahují zabudovanou podporu pro "SQLite3":http://www.sqlite.org, což je jednoduchá databáze, která nepotřebuje server. Je možné (i když nijak nutné), že produkční provoz by ji přetížil, ale na vývoj a testování je ideální. Když Rails vytvářejí novou aplikaci, automaticky vytvářejí konfiguraci pro SQLite3 — to ale můžete kdykoliv změnit.
 
-Tady je sekce základního souboru s konfigurací (<tt>config/database.yml</tt>) s informacemi pro připojení v prostředí development:
+Takto vypadá konfigurace pro připojení k databázi ve vývojovém prostředí ve výchozím souboru <tt>config/database.yml</tt>:
 
 <yaml>
 development:
@@ -223,11 +223,11 @@ development:
   timeout: 5000
 </yaml>
 
-NOTE: V této příručce používáme SQLite3 databázi pro ukládání dat, jelikož nepotřebuje žádnou dodatečnou konfiguraci. Rails také podporují MySQL a PostgreSQL "out of the box" a existují pluginy pro další databázové systémy. Jestliže využíváte databázi v produkčním prostředí, Rails bude mít správný adaptér pro připojení.
+NOTE: V tomto návodu používáme pro ukládání dat SQLite3, jelikož nepotřebuje žádnou konfiguraci a „prostě funguje“. Rails samotné podporují rovněž MySQL and PostgreSQL a existují pluginy pro mnoho ostatních databázových systému. Pokud používáte v produkčním prostředí nějakou konkrétní databázi, je velmi pravděpodobné, že pro ni bude k dispozici ten správný adaptér, abyste ji mohli používat v Rails.
 
 h5. Konfigurace databáze MySQL
 
-Pokud chcete použít MySQL namísto implicitní databáze Sqlite3, váš +config/database.yml+ bude vypadat trochu odlišně. Tady je část pro prostředí development:
+Pokud chcete místo výchozí databáze SQLite3 použít MySQL, váš +config/database.yml+ bude vypadat trochu jinak. Zde je konfigurace pro vývojové prostředí:
 
 <yaml>
 development:
@@ -240,11 +240,11 @@ development:
   socket: /tmp/mysql.sock
 </yaml>
 
-Pokud máte na vašem vývojovém počítači instalaci MySQL s uživatelem root a prázdným heslem, tak konfigurace bude fungovat. V opačném případě v ní změnte jméno a heslo podle potřeby v sekci +development+.
+Pokud máte na vašem vývojovém počítači instalaci MySQL s uživatelem root a prázdným heslem, konfigurace bude fungovat. V opačném případě změnte uživatelské jméno a heslo.
 
 h5. Konfigurace databáze PostgreSQL
 
-A konečně pokud se rozhodnete pro použití PostgreSQL, +config/database.yml+ bude upraven následujícím způsobem:
+A konečně, pokud budete chtít použít PostgreSQL, váš +config/database.yml+ bude vypadat nějak takto:
 
 <yaml>
 development:
@@ -256,19 +256,21 @@ development:
   password:
 </yaml>
 
-Změnte jméno a heslo v sekci +development+ dle potřeby
+Je pravděpodobné, že budete muset změnit jméno a heslo.
+
+TIP: Konfiguraci databáze nemusíte zapisovat ručně. Pokud jste se podívali na volby generátoru nové aplikace, jistě jste přišli na to, že obsahuje volbu <tt>--database</tt>. Dává vám na výběr z adaptérů pro několik nejrozšířenějších relačních databází. Generátor můžete spustit i opakovaně: <tt>cd .. && rails new blog --database=mysql</tt>. Potvrďte přepsání souboru +config/database.yml+ a aplikace bude nakonfigurována pro databázi MySQL.
 
 h4. Vytvoření databáze
 
-Teď, když máme databázi nakonfigurovanou, je čas ji vytvořit. Rails jednoduše vytvoří prázdnou databázi spuštěním rake příkazu:
+Když máme konfiguraci databáze hotovou, pojďme ji vytvořit. Toho dosáhnete spuštěním příkazu:
 
 <shell>
 $ rake db:create
 </shell>
 
-Toto vytvoří databáze SQLite3 s názvy development a test v adresáři <tt>db/</tt>.
+Ten vytvoří databáze SQLite3 pro vývojové a testovací prostředí v adresáři <tt>db/</tt>.
 
-TIP: Rake je obecným nástrojem pro spouštění příkazů, který Rails používají na mnoho věcí. Můžete se podívat na seznam dostupných rake příkazů spuštěním +rake -T+.
+TIP: Rake je obecným nástrojem pro spouštění konzolových příkazů, který Rails používají na mnoho různých věcí. Seznam dostupných  příkazů si zobrazíte spuštěním příkazu +rake -T+.
 
 h3. Ahoj Rails!
 
