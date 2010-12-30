@@ -339,44 +339,44 @@ Pokud si nyní v prohlížeči zobrazíte stránku "http://localhost:3000":http:
 
 NOTE. Více informací ohledně směrování požadavků naleznete v návodu "Rails Routing from the Outside In":routing.html.
 
-h3. Rychlý start s použitím nástroje Scaffolding (lešení)
+h3. Rychlý start s využitím nástroje generátoru „lešení“ (_scaffolding_)
 
-V Rails je _scaffolding_ rychlým způsobem jak vytvořit některé hlavní kusy aplikace. Když chcete vytvořit modely, views a controllery pro nové zdroje v jediném kroku, scaffolding je tím správným nástrojem.
+_Scaffolding_ je v Rails způsobem, jak rychle vygenerovat hlavní součásti aplikace. Říká se mu „lešení“, protože vytvoří funkční části zdrojového kódu ze šablon, které Rails obsahují. Vygenerované zdrojové kódy pak samozřejmě můžete upravovat. Když chcete najednou vytvořit modely, kontrolery a šablony pro nové entity v aplikaci, generování „lešení“ je pro to ideálním nástrojem.
 
-h3. Vytvoření zdroje
+h3. Vytvoření nové entity („zdroje“)
 
-V případě blogovací aplikace můžete začít vytvořením scaffold pro zdroj Post (příspěvek): ten bude představovat jednotlivý příspěvek na blogu. Pro jeho vytvoření zadejte v terminálu následující příkaz:
+V případě naší aplikace, blogu, můžeme začít vytvořením „lešení“ pro entitu +Post+ (příspěvek): ta bude představovat jednotlivý článek na blogu. Abyste jej vytvořili, zadejte na příkazové řádce následující příkaz:
 
 <shell>
 $ rails generate scaffold Post name:string title:string content:text
 </shell>
 
-NOTE. I když Vám scaffolding pomůže rychle začít, univerzální kód, který vygeneruje, pravděpodobně nebude perfektně vyhovovat Vaší aplikaci. Ve většině případů budete chtít následně poupravit vygenerovaný kód. Mnoho zkušených vývojářů v Rails vůbec scaffolding nepoužívá a upřednostňuje psaní veškerého nebo většiny kódu „z čistého listu.“
+NOTE. I když vám _scaffolding_ pomůže rychle začít, univerzální kód, který vygeneruje, vám nemusí zcela vyhovovat. Zcela jistě budete chtít vygenerovaný kód upravit. Mnoho zkušených Rails vývojářů _scaffolding_ nepoužívá, a raději píše zdrojový kód úplně od začátku. Rails však poskytují ještě zajímavější možnost: upravit přímo šablony pro generované modely, kontrolery, šablony, helpery, či soubory s testy. Další informace najdete v návodu "Creating and Customizing Rails Generators & Templates":generators.html.
 
-Scaffolding generátor vytvoří ve Vaší aplikaci 15 souborů, několik složek, a jeden soubor upraví. Toto je přehled co všechno vytvoří:
+Generátor vytvoří ve vaší aplikaci 15 souborů, několik složek, a jeden soubor upraví. Pojďme si výsledek prohlédnout:
 
-|_.Soubor                                       |_.Účel|
-|db/migrate/20100207214725_create_posts.rb.rb    |Migrace vytvářející tabulku posts v databázi (u Vás bude název obsahovat jinou časovou značku)|
+|_.Soubor                                     |_.Účel|
+|db/migrate/20100207214725_create_posts.rb.rb |Migrace vytvářející tabulku +posts+ v databázi (datum na začátku se ve vašem případě bude lišit)|
 |app/models/post.rb                           |model Post|
-|test/fixtures/posts.yml                      |Uměle vygenerované příspěvky pro účely testování|
-|app/controllers/posts_controller.rb          |Posts controller|
-|app/views/posts/index.html.erb               |View zobrazující seznam všech příspěvků|
-|app/views/posts/edit.html.erb                |View k úpravám existujícího příspěvku|
-|app/views/posts/show.html.erb                |View pro zobrazení jednotlivého příspěvku|
-|app/views/posts/new.html.erb                 |View pro vytvoření nového příspěvku|
-|app/views/posts/_form.html.erb               |Parciální šablona formuláře použitého ve views new a edit|
-|app/helpers/posts_helper.rb                  |Pomocné funkce pro předchozí views|
-|test/unit/post_test.rb                       |Jednotkové testy posts modelu|
-|test/functional/posts_controller_test.rb     |Funkční testy posts controlleru|
-|test/unit/helpers/posts_helper_test.rb       |Jednotkové testy posts helperu|
-|config/routes.rb                             |Do souboru přidány údaje pro směrování posts|
-|public/stylesheets/scaffold.css              |Kaskádové styly zlepšující vzhled scaffoldovaných views|
+|test/fixtures/posts.yml                      |Testovací data|
+|app/controllers/posts_controller.rb          |kontroler PostsController|
+|app/views/posts/index.html.erb               |Šablona zobrazující seznam všech příspěvků|
+|app/views/posts/edit.html.erb                |Šablona zobrazující formulář pro úpravu příspěvku|
+|app/views/posts/show.html.erb                |Šablona zobrazující detail příspěvku|
+|app/views/posts/new.html.erb                 |Šablona zobrazující formulář pro přidání nového příspěvku|
+|app/views/posts/_form.html.erb               |Parciální šablona formuláře použitého v šablonách pro úpravu a přidání příspěvku|
+|app/helpers/posts_helper.rb                  |Pomocné metody pro šablony|
+|test/unit/post_test.rb                       |Jednotkové testy pro model|
+|test/functional/posts_controller_test.rb     |Funkční testy pro kontroler|
+|test/unit/helpers/posts_helper_test.rb       |Jednotkové testy pro helper|
+|config/routes.rb                             |Do souboru byly přidány údaje pro směrování URL entity +post+|
+|public/stylesheets/scaffold.css              |Výchozí kaskádové styly|
 
 h4. Spuštění migrace
 
-Jedním z výstupů příkazu +rails generate scaffold+ je _databázová migrace_. Migrace jsou třídy Ruby, jejichž účelem je zjednodušit vytváření nebo úpravy databázových tabulek. Rails používají ke spuštění migrací příkaz rake, a je také možné vrátit zpět migraci, která již byla provedena. Názvy souborů migrací obsahují časovou značku, aby bylo zajištěno, že jsou zpracovány v pořadí, v jakém byly vytvořeny.
+Jedním z výstupů příkazu +rails generate scaffold+ je _databázová migrace_. Migrace jsou třídy Ruby, jejichž účelem je zjednodušit vytváření nebo úpravy databázových tabulek. Rails používají ke spuštění migrací příkaz +rake+. Je možné migraci vrátit zpět, tedy zrušit změny, které v databázi provedla. Název souboru migrace začíná datem, kdy byl vytvořen, aby byly migrace provedeny v tom pořadí, v jakém byly vytvořeny.
 
-Když se podíváte do souboru +db/migrate/20100207214725_create_posts.rb+ (pamatujte, že Váš bude mít mírně odlišný název), uvidíte následující:
+Když se podíváte do souboru +db/migrate/20100207214725_create_posts.rb+ (pamatujte, že ten váš bude mít odlišný název), uvidíte následující:
 
 <ruby>
 class CreatePosts < ActiveRecord::Migration
@@ -396,15 +396,15 @@ class CreatePosts < ActiveRecord::Migration
 end
 </ruby>
 
-Tato migrace vytváří dvě metody: +up+, volanou když spustíte tuto migraci nad databází, a +down+ v případě, že chcete později vrátit změny, provedené touto migrací na databázi. V tomto případě medtoda +up+ vytvoří tabulku +posts+ se dvěma sloupci formátu string (textový řetězec) a jeden sloupec formátu text. Také vytvoří dva sloupce pro časové značky určené pro zachycení vyvoření a editace záznamu. Více informací o migracích naleznete v průvodci "Rails Database Migrations":migrations.html.
+Tato migrace vytváří dvě metody: +up+, volanou když v databázi provádíme změny, které tato migrace definuje, a +down+, volanou v případě, že je později chcete vrátit. V našem případě medoda +up+ vytvoří tabulku +posts+ se dvěma sloupci formátu +string+ (krátký text, +VARCHAR+) a jeden sloupec formátu +text+. Vytvoří také dva sloupce pro časové značky (_timestamp_) které udržují informaci o času vytvoření a úpravě záznamů. Více informací o migracích naleznete v návodu "Rails Database Migrations":migrations.html.
 
-Nyní můžete použít příkaz rake ke spuštění migrace:
+Nyní můžete pomocí příkazu +rake+ migrace provést:
 
 <shell>
 $ rake db:migrate
 </shell>
 
-Rails provede migraci a oznámí Vám, že vytvořily tabulku Posts.
+Rails provede změny v databázi a oznámí vám, že vytvořily tabulku +posts+.
 
 <shell>
 ==  CreatePosts: migrating ====================================================
@@ -413,45 +413,45 @@ Rails provede migraci a oznámí Vám, že vytvořily tabulku Posts.
 ==  CreatePosts: migrated (0.0020s) ===========================================
 </shell>
 
-NOTE. Protože pracujete implicitně v development prostředí, tento příkaz se provede nad databází definovanou v sekci +development+ v souboru +config/database.yml+.
+NOTE. Protože výchozím prostředím je v Rails prostředí vývojové, migrace se provedou v databázi definované v sekci +development+ v konfiguračním souboru +config/database.yml+. Pokud byste chtěli migrace provést v jiném prostředí, typicky produkčním, musíte je při spouštění příkazu explictině uvést: <tt>rake db:migrate RAILS_ENV=production</tt>.
 
 h4. Přidání odkazu
 
-K napojení příspěvků na domácí stránku, kterou jste už vytvořili, můžete přidat odkaz. Otevřete +app/views/home/index.html.erb+ a změňte jej takto:
+Nyní můžeme přidat odkaz na náš blog na domovskou stránku aplikace, kterou jsme vytvořili dříve. Otevřete soubor +app/views/home/index.html.erb+ a změňte jej takto:
 
 <code lang="ruby">
 <h1>Ahoj, Rails!</h1>
 <%= link_to "Můj blog", posts_path %>
 </code>
 
-Metoda +link_to+ je jednou z pomocných funkcí views, zabudovaných v Rails. Vytvoří hypertextový odkaz z parametrů jaký text zobrazit a kam odkázat – v tomto případě cesta k příspěvkům.
+Metoda +link_to+ je jednou z pomocných funkcí zabudovaných v Rails, které jsou dostupné v šablonách (_views_). Vytvoří hypertextový odkaz podle předaných parametrů: zobrazeného textu a URL odkazu — v tomto případě je tímto URL cesta k výpisu příspěvků.
+
+NOTE. Možná vás zarazí metoda +posts_path+. Jedná se o pomocnou metodu, kterou vám Rails poskytují proto, abyste mohli udržovat pravidla směrování (_routing_) na jediném místě aplikace, v konfiguračním souboru +config/routes.rb+, a pomocí metod jako +posts_path+ nebo +new_post_path+ je pak předávali v aplikaci jako výsledené URL. Všechny pravidla směrování ve vaší aplikaci si můžete zobrazit příkazem +rake routes+. Podrobné informace o směrování v Rails naleznete v návodu "Rails Routing from the Outside In":routing.html.
 
 h4. Práce s příspěvky v prohlížeči
 
-Nyní už můžete začít pracovat s příspěvky. Přejděte na "http://localhost:3000":http://localhost:3000/ a klikněte na odkaz "Můj blog":
+Konečně můžeme začít pracovat s příspěvky našeho blogu! Načtěte v prohlížeči stránku "http://localhost:3000":http://localhost:3000/ a klikněte na odkaz "Můj blog":
 
 !images/posts_index.png(Posts Index screenshot)!
 
-Toto je výsledkem vykreslení pohledu +index+. Momentálně nejsou v databázi žádné příspěvky, ale pokud kliknete na odkaz +New Post+, můžete nějaký vytvořit. Následně uvidíte, že můžete příspěvky editovat, podívat se na jejich detaily nebo je mazat. Veškerá tato aplikační logika a HTML, které se o to starají, byly vytvořeny jediným příkazem +rails generate scaffold+.
+Stránka, kterou vidíte je výsledkem vykreslení šablony v souboru +app/views/posts/index.html.erb+. Zatím v databázi žádné příspěvky nejsou, ale když kliknete na odkaz _New Post_, můžete nějaký uložit. Rychle zjistíte, že můžete příspěvky upravovat, prohlížet si jejich detaily, nebo je smazat. A všechna aplikační logika i HTML kód vytvořil jediný příkaz +rails generate scaffold+.
 
-TIP: V módu development (ve kterém pracujete implicitně) Rails znovu načítá celou aplikaci při každém požadavku odeslaném prohlížečem, takže není třeba restartovat webserver.
-
-Gratulujeme, jedete na Rails! Teď je na čase podívat se, jak to všechno funguje.
+Gratulujeme, právě jste nasedli na Rails! A teď je na čase podívat se, jak to vlastně všechno funguje.
 
 h4. Model
 
-Soubor modelu +app/models/post.rb+ už snad nemůže být jednodušší:
+Soubor obsahující definici modelu, +app/models/post.rb+, asi nemůže být jednodušší:
 
 <ruby>
 class Post < ActiveRecord::Base
 end
 </ruby>
 
-K tomu není moc co dodat - ale povšimněte si prosím, že třída +Post+ dědí od třídy +ActiveRecord::Base+. Active Record poskytuje spoustu funkcionality Vašim rails modelům zdarma, včetně základních databázových operací CRUD (Create/Vytvořit, Read/Načíst, Update/Upravit, Destroy/Odstranit), validací dat, a také sofistikovanou podporu vyhledávání a schopnost vytváření relací mezi jednotlivými modely.
+Možná vás překvapí, jak málo kódu obsahuje. Povšimněte si však, že třída +Post+ dědí od třídy +ActiveRecord::Base+. Active Record poskytuje modelům v Rails spoustu funkcionality: základní operace se záznamy v databázi (CRUD, _Create, Read, Update, Destroy_), validační logiku, stejně jako podporu pro složité dotazy do databáze nebo propojení mezi jednotlivými modely.
 
-h4. Přidání pár validací
+h4. Validační pravidla
 
-Rails obsahují metody, které Vám pomůžou validovat data, která se posílají modelu. Otevřete soubor +app/models/post.rb+ a upravte jej:
+Rails obsahují metody, které vám pomohou validovat data, která se modelu posílají (typicky prostřednictvím kontroleru z HTML formuláře, jako když vytváříme nový příspěvek.) Otevřete soubor +app/models/post.rb+ a upravte jej takto:
 
 <ruby>
 class Post < ActiveRecord::Base
@@ -461,17 +461,17 @@ class Post < ActiveRecord::Base
 end
 </ruby>
 
-Tyto změny zajistí, že všechny příspěvky budou mít jméno (name) a titulek (title) a že titulek bude mít alespoň 5 znaků. Rails můžou validovat mnoho různých podmínek v modelu, včetně existence a unikátnosti sloupců, jejich formátu a existence asociovaných objektů.
+Tyto deklarace zajistí, že všechny příspěvky budou obsahovat název (_name_) a titulek (_title_), a že titulek bude mít alespoň 5 znaků. Rails obsahují validace pro mnoho různých podmínek: ověření existence či unikátní hodnoty nějakého atributu (sloupce v databázi), shody textového atributu se zadaným regulárním výrazem, shodu atributu s některým prvkem ze zadaného rozsahu a mnoho dalších. Validace umí ověřovat i validitu asociovaných modelů. Více informací nalezenete v návodu "Active Record Validations and Callbacks":active_record_validations_callbacks.html.
 
-h4. Použití konzole
+h4. Konzole aplikace
 
-Abychom si prohlídli validace v akci, můžeme použít konzoli. Konzole je nástroj příkazové řádky, který umožňuje spouštět Ruby kód v kontextu Vaší aplikace:
+Abychom si validace vyzkoušeli v praxi, můžeme použít konzoli aplikace. Konzole je nástroj pro příkazovou řádku, který umožňuje spouštět libovolný Ruby kód v kontextu aplikace. Spusťte konzoli tímto příkazem v terminálu:
 
 <shell>
 $ rails console
 </shell>
 
-Když se konzole načte, můžete ji použít pro práci s modely ve Vaší aplikaci:
+Nyní můžeme pracovat kupříkladu s modely v naší aplikaci:
 
 <shell>
 >> p = Post.new(:content => "Nový příspěvek")
@@ -480,21 +480,25 @@ Když se konzole načte, můžete ji použít pro práci s modely ve Vaší apli
      updated_at: nil>
 >> p.save
 => false
+>> p.valid?
+=> false
 >> p.errors
 => #<OrderedHash { :title=>["can't be blank",
                            "is too short (minimum is 5 characters)"],
                    :name=>["can't be blank"] }>
 </shell>
 
-Tento kód ukazuje vytvoření nové instance třídy +Post+, pokus o její uložení a obdržení návratové hodnoty +false+ (indikující, že uložení se nezdařilo) a vypsání detailu chyby.
+Vidíte, že jsme vytvořili novou instanci třídy +Post+ a pokusili se ji uložit. Obdrželi jsme návratovou hodnotu +false+, která naznačuje, že uložení se nezdařilo. Vidíte, že metoda +valid?+ vrací rovněž false, a metoda +errors+ vrací asociativní pole (_hash_) s nesplněnými validačními podmínkami pro jednotlivé atributy.
 
-Až budete hotovi, napište +exit+ a stiskněte +enter+ pro odchod z konzole.
+TIP. Zkuste místo +p.save+ zavolat metodu +p.save!+ (s vykřičníkem, v Ruby označovanou jako _bang method_). Vidíte, že nevrací +false+, ale vyvolá výjimku +ActiveRecord::RecordInvalid+.
 
-TIP: Narozdíl od development web serveru, konzole nenačítá znovu kód pro každý řádek. Pokud provedete změnu v modelu zatímco konzole je otevřená, napište v konzoli +reload!+, abyste tyto změny načetli.
+Až budete hotovi, napište +exit+ a stiskněte +Enter+ pro ukončení konzole.
 
-h4. Vypsání všech příspěvků
+TIP: Na rozdíl od vývojového web serveru nenačítá konzole kód znovu — pokud tedy provedete změnu v modelu a máte otevřenou konzoli aplikace, napište příkaz +reload!+, abyste změny načetli.
 
-Nejjednodušejší místo, kde začít zkoumat funkcionalitu naší aplikace je kód, který vypíše všechny příspěvky. Otevřete soubor +app/controllers/posts_controller.rb+ a podívejte se na akci +index+:
+h4. Výpis příspěvků
+
+Nejjednoduším způsobem, jak začít zkoumat funkcionalitu naší aplikace, je rozebrat si kód, který vypisuje seznam příspěvků (_posts_).  Otevřete soubor +app/controllers/posts_controller.rb+ a podívejte se na metodu +index+ (v Rails metody kontroleru běžně nazýváme „akce“, _action_):
 
 <ruby>
 def index
@@ -507,11 +511,15 @@ def index
 end
 </ruby>
 
-+Post.all+ říká modelu +Post+, aby vrátil všechny příspěvky, které momentálně v databázi jsou. Výstupem tohoto příkazu je pole s příspěvky, které uložíme do instanční proměnné nazvané +@posts+.
++Post.all+ říká modelu +Post+, aby z databáze načetl všechny příspěvky. Výstupem tohoto příkazu je pole s příspěvky, které uložíme do instanční proměnné nazvané +@posts+.
 
-TIP: Více informací o vyhledávání záznamů pomocí Active Record naleznete v průvodci "Active Record Query Interface":active_record_querying.html.
+TIP: Metoda +all+ odpovídá SQL dotaz +SELECT "posts".* FROM "posts"+. To si můžete snadno ověřit: po načtení stránky stránky v prohlížeči se podívejte na výpis v okně nebo záložce terminálu, kde jste spustili webový server s aplikací. Active Record podporuje samozřejmě složité vyhledávací, agregační nebo asociační dotazy. Více informací naleznete v návodu "Active Record Query Interface":active_record_querying.html.
 
-Blok +repond_to+ zpracuje HTML a XML volání této akce. Pokud přejdete na "http://localhost:3000/posts.xml":http://localhost:3000/posts.xml, uvidíte všechny příspěvky v XML formátu. Formát HTML vyhledá view ve složce +app/views/posts/+ s názvem odpovídajícím názvu akce. Rails dají všechny instanční proměnné z akce k dispozici příslušnému view. Zde je +app/views/posts/index.html.erb+:
+Kód mezi +do ... end+ se v Ruby nazývá „blok“ a často se používá podobně jako např. anonymní funkce v jQuery (+$.get('/ajax', function(data) { ... }+), které možná znáte lépe.
+
+Blok předaný metodě +respond_to+ zpracovává HTML a XML výstup akce +index+. Pokud načtete v prohlížeči stránku "http://localhost:3000/posts.xml":http://localhost:3000/posts.xml, uvidíte výpis příspěvků ve formátu XML.
+
+Formát HTML automaticky hledá šablonu ve složce +app/views/posts/+ nazvanou stejně jako metoda, tedy +index+. Všechny instanční proměnné z kontroleru jsou v šabloně k dipozici. Pojďme se podívat na obsah šablony, tedy souboru +app/views/posts/index.html.erb+:
 
 <erb>
 <h1>Listing posts</h1>
@@ -543,18 +551,22 @@ Blok +repond_to+ zpracuje HTML a XML volání této akce. Pokud přejdete na "ht
 <%= link_to 'New post', new_post_path %>
 </erb>
 
-Tento pohled projde obsah pole +@posts+, aby zobrazil obsah a odkazy. Několik věcí k povšimnutí v tomto view:
+Ruby kód v šabloně prochází pole +@posts+ a zobrazuje obsah jednotlivých položek (název, atd) a odkazy na stránky detailu, provedení úprav, smazání záznamu. Upozorníme vás na několik věcí:
 
-* +link_to+ vytvoří hypertextový odkaz na příslušný cíl
-* +edit_post_path+ a +new_post_path+ jsou helpery, které Rails poskytují jako součást REST směrování. U dalších akcí, které controller obsahuje, uvidíte mnoho dalších variací těchto helperů.
+* šablony jsou zapsány v šablonovacím jazyce "ERB":http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/classes/ERB.html (_Embedded Ruby_)
+* výkonný Ruby kód je uvozen znakem procenta (+&lt;% ... &gt;+), kód, který vypisuje data do stránky, je navíc uvozen znakem rovná se (+&lt;%= ... &gt;+)
+* pomocná metoda +link_to+ vytvoří hypertextový odkaz
+* pomocné metody +edit_post_path+ a +new_post_path+, poskytují Rails jako součást REST směrování podle pravidel v +config/routes.rb+. V dalších příkladech uvidíme ještě mnoho dalších variací těchto _helperů_
 
-NOTE. V předchozích verzích Rails jste museli použít +&lt;%=h post.name %&gt;+ aby bylo případný HTML kód transformován, než bude vložen do stránky. V Rails 3.0 je tato operace implicitní. Abyste získali netransformované HTML, použijte +&lt;%= raw post.name %&gt;+.
+NOTE. V předchozích verzích Rails jste museli použít metodu <tt>h</tt>, aby byl případný HTML kód, který by dynamický obsah vypisovaný do stránky mohl obsahovat, ošetřen a převeden na entity (tzv. _escapován_). V Rails 3 a vyšších verzích je toto ošetření implicitní, a jakýkoliv HTML kód je na entity převáděn automaticky. Pokud chcete získat „surové“ HTML, použijte pomocnou metodu +raw+: +&lt;%= raw post.name %&gt;+ nebo rozšíření třídy +String#html_safe+: +&lt;%= post.name.html_safe %&gt;+
 
-TIP: Více detailů k zobrazovacímu procesu najdete v průvodci "Layouts and Rendering in Rails":layouts_and_rendering.html.
+TIP: Podrobnosti o šablonách a jejich zobrazování najdete v návodu "Layouts and Rendering in Rails":layouts_and_rendering.html.
 
-h4. Ůprava layoutu
+h4. Ůprava _layoutu_
 
-View je jen část příběhu, jak je se HTML zobrazí ve Vašem prohlížeči. Rails také používají konecpt layoutů, což jsou konteinery pro views. Když Rails zobrazují view v prohlížeči, vkládají HTML kód z view souboru do HTML kódu layoutu. V předchozích verzích Rails příkaz +rails generate scaffold+ automaticky vytvořil samostatný layout pro příslušný controller, například +app/views/layouts/posts.html.erb+ pro posts controller. Tohle však bylo v Rails 3.0 změněno. Vytváří se jeden +layout+ pro celou aplikaci a je uložen jako soubor +app/views/layouts/application.html.erb+. Otevřete tento layout ve Vašem editoru a upravte tag +body+:
+Konkrétní šablona pro akci kontroleru (tedy _view_) je jen část toho, jak Rails zobrazují HTML ve vašem prohlížeči. V Rails najdeme také tzv. _layouty_, což jsou kontejnery pro jednotlivé šablony (_view_). Když Rails vykreslují tuto konkrétní šablonu, vloží ji do této „obalující šablony“, _layoutu_. V předchozích verzích Rails generátor vytvářel zvláštní _layout_ pro každý kontroler. To se v Rails 3 změnilo a generátor vytvoří jen jeden _layout_, v souboru +app/views/layouts/application.html.erb+, společný pro celou aplikaci. (Můžete samozřejmě přidávat _layouty_ vlastní a používat v každém kontroleru, nebo i v každé z jejich akcí _layout_ jiný.)
+
+Otevřete nyní společný layout v editoru, a upravte například tag +&lt;body&gt;+:
 
 <erb>
 <!DOCTYPE html>
@@ -573,11 +585,11 @@ View je jen část příběhu, jak je se HTML zobrazí ve Vašem prohlížeči. 
 </html>
 </erb>
 
-Když teď znovu načtete stránku +/posts+, uvidíte, že má šedé pozadí. Stejné šedé pozadí bude použito ve všech ostatních views.
+Když v prohlížeči znovu načtete stránku "+/posts+":http://localhost:3000/posts, uvidíte, že má šedé pozadí. Stejný _layout_ bude použit i pro vykreslení ostatních _views_ aplikace.
 
-h4. Vytváření nových příspěvků
+h4. Vytvoření nového příspěvku
 
-Vytvoření nového příspěvku zahrnuje dvě akce. První je akce +new+, která vytvoří prázdný objekt +Post+:
+Abychom vytvořili nový příspěvek, musíme projít dvěma akcemi kontroleru. První z nich je akce +new+, která vytvoří objekt @post, tedy novou instanci třídy +Post+:
 
 <ruby>
 def new
@@ -590,7 +602,7 @@ def new
 end
 </ruby>
 
-View +new.html.erb+ zobrazí uživateli tento prázdný příspěvek:
+Šablona +new.html.erb+ zobrazí uživateli formulář pro vyplnění atributů tohoto objektu:
 
 <erb>
 <h1>New post</h1>
@@ -600,9 +612,9 @@ View +new.html.erb+ zobrazí uživateli tento prázdný příspěvek:
 <%= link_to 'Back', posts_path %>
 </erb>
 
-Řádek +&lt;%= render 'form' %&gt;+ je naším úvodem do parciálních šablon v Rails (dále _partials_). Partial je útržek kódu HTML a Ruby, který může být vícenásobně použit na různých místech. V tomto případě je formulář pro vytvoření nového příspěvku prakticky totožný s formulářem pro úpravu příspěvků – oba mají textová pole pro název a titlek textarea pro obsah příspěvku s tlačítkem pro vytvoření nového příspěvku nebo úpravu stávajícího.
+Řádek obsahující kód +&lt;%= render 'form' %&gt;+ nám dává nahlédnout do problematiky _parciálních šablon_ v Rails (anglicky _partials_ nebo také _partial templates_). Parciální šablona je izolovaný kousek HTML a Ruby kódu, který můžeme používat na více místech aplikace. V našem případě je formulář pro vytvoření nového příspěvku téměr shodný s formulářem pro úpravy: oba mají dvě políčka pro vložení názvu a titulku, textové pole pro vložení obsahu, a tlačítko pro vytvoření nového příspěvku nebo aktualizaci existujícího.
 
-Když se podíváte na soubor +views/posts/_form.html.erb+, uvidíte následující:
+Když se podíváte na soubor obsahující parciální šablonu pro formulář, +app/views/posts/_form.html.erb+, uvidíte následující:
 
 <erb>
 <%= form_for(@post) do |f| %>
@@ -635,17 +647,17 @@ Když se podíváte na soubor +views/posts/_form.html.erb+, uvidíte následují
 <% end %>
 </erb>
 
-Tento partial obdrží všechny instanční proměnné definované při volání view, takže v tomto případě controller vloží nový objekt příspěveku to proměnné +@post+ a proto je k dispozici jak ve view tak v partialu jako +@post+.
+Parciální šablona má stejně jako hlavní šablona k dispozici instanční proměnné nastavené v kontroleru, v tomto případě +@post+.
 
-Více informací k partials najdete v průvodci "Layouts and Rendering in Rails":layouts_and_rendering.html#using-partials guide.
+Více informací o parciálních šablonách najdete v návodu "Layouts and Rendering in Rails":layouts_and_rendering.html#using-partials.
 
-The +form_for+ block is used to create an HTML form. Within this block, you have access to methods to build various controls on the form. For example, +f.text_field :name+ tells Rails to create a text input on the form, and to hook it up to the +name+ attribute of the instance being displayed. You can only use these methods with attributes of the model that the form is based on (in this case +name+, +title+, and +content+). Rails uses +form_for+ in preference to having you write raw HTML because the code is more succinct, and because it explicitly ties the form to a particular model instance.
+Blok předaný metodě +form_for+ zobrazí HTML formulář. V rámci tohoto bloku máte k dispozici pomocné metody pro vykreslení formulářových prvků. Deklarace +f.text_field :name+, například, říká Rails, že mají zobrazit textové políčko, a propojit je s atributem +name+ příspěvku +@post+. Tyto pomocné metody můžete využít jen ve spojení s atributy modelu (v našem případě je to +name+, +title+, apod.) Samozřejmě byste mohli celý formulář zapsat v přímo v HTML – ale v Rails využíváme pro zobrazení formuláře metodu +form_for+ a ostatní pomocné metody neboť výsledný kód je kratší, přehlednější a formulář je provázán s konkrétní instancí modelu.
 
-The +form_for+ block is also smart enough to work out if you are doing a _New Post_ or an _Edit Post_ action, and will set the form +action+ tags and submit button names appropriately in the HTML output.
+Metoda +form_for+ je také natolik inteligentní, že pozná, zda chcete zobrazit formulář pro přidání nového příspěvku nebo úpravu příspěvku existujícího. Nastaví správné URL pro atribut +action+ formuláře i název tlačítka pro odeslání formuláře.
 
-TIP: If you need to create an HTML form that displays arbitrary fields, not tied to a model, you should use the +form_tag+ method, which provides shortcuts for building forms that are not necessarily tied to a model instance.
+TIP: Pro vykreslování formulářových prvků můžete tam, kde to má smysl, využít i pomocné metody, které nejsou vázány na model, např. +text_field_tag+, místo +f.text_field+. Pro vykreslení formuláře, který není vázán na konkrétní model, můžete využít metodu +form_tag+ místo +form_for+. Mějte však na paměti, že mnoho logiky, např. správné pojmenování formulářových prvků nebo uvedení URL, kam bude formulář odeslán, pak musíte napsat sami.
 
-When the user clicks the +Create Post+ button on this form, the browser will send information back to the +create+ method of the controller (Rails knows to call the +create+ method because the form is sent with an HTTP POST request; that's one of the conventions that I mentioned earlier):
+Když kliknete na tlačítko +Create Post+, prohlížeč odešle data z formuláře aplikaci, kde je převezme metoda +create+. Rails vědí, že mají použít metodu +create+ kontroleru +PostsController+ právě proto, že respektujeme konvence, o nichž jsme hovořili v úvodu tohoto průvodce. Pojďme se podívat na zdrojový kód metody +create+:
 
 <ruby>
 def create
@@ -666,15 +678,36 @@ def create
 end
 </ruby>
 
-The +create+ action instantiates a new Post object from the data supplied by the user on the form, which Rails makes available in the +params+ hash. After successfully saving the new post, +create+ returns the appropriate format that the user has requested (HTML in our case). It then redirects the user to the resulting post +show+ action and sets a notice to the user that the Post was successfully created.
+Metoda +create+ vytvoří novou instanci třídy +Post+ a předá jejímu konstruktoru data z formuláře, která Rails předává z view pomocí metody +params+ (ta vrací asociativní pole, _hash_). Pokud se podíváte na výpis v okně terminálu, kde jste příkazem +rails server+ spustili webový server, uvidíte všechny podrobnosti o tom, jak data přicházejí z formuláře do Rails:
 
-If the post was not successfully saved, due to a validation error, then the controller returns the user back to the +new+ action with any error messages so that the user has the chance to fix the error and try again.
+<shell>
+Started POST "/posts" for 127.0.0.1 at ...
+  Processing by PostsController#create as HTML
+  Parameters: {"commit"=>"Create Post",
+               "post"=>{"name"=>"Hello, World!",
+                        "title"=> ...},
+                "authenticity_token"=>"...",
+                "utf8"=>"✓"}
+  AREL (1.3ms)  INSERT INTO "posts" ...
+Redirected to http://localhost:3000/posts/1
+Completed 302 Found in 17ms
+</shell>
 
-The "Post was successfully created." message is stored inside of the Rails +flash+ hash, (usually just called _the flash_) so that messages can be carried over to another action, providing the user with useful information on the status of their request. In the case of +create+, the user never actually sees any page rendered during the Post creation process, because it immediately redirects to the new Post as soon Rails saves the record. The Flash carries over a message to the next action, so that when the user is redirected back to the +show+ action, they are presented with a message saying "Post was successfully created."
+Pokud byl záznam úspěšně uložen, metoda +create+ vykoná kód odpovídající formátu požadavku: v našem případě HTML. Ten přesměruje prohlížeč na stránku s detailem záznamu (metoda +show+) a nastaví notifikaci pro tzv. _flash_ zprávu. Tyto notifikace se v Rails používají pro pro předávání zpráv mezi jednotlivými HTTP požadavky. V případě akce +create+ totiž uživateli nezobrazujeme žádnou stránku, ale po jejím provedení jej rovnou přesměrujeme na stránku detailu příspěvku. _Flash_ notifikace uchová zprávu pro následující HTTP požadavek, takže při vykreslení šablony pro akci +show+ zobrazíme uživateli zprávu „Post was successfully created“.
 
-h4. Showing an Individual Post
+Pokud se záznam nepodařilo uložit — nejspíše díky nesplnění validačních pravidel, když jste například některé povinné pole nechali prázdné — v prohlížeči se zobrazí view pro předchozí akci, +new+, které bude obsahovat formulář se znovu-vyplněnými údaji a informace o nesprávně vyplněných položkách.
 
-When you click the +show+ link for a post on the index page, it will bring you to a URL like +http://localhost:3000/posts/1+. Rails interprets this as a call to the +show+ action for the resource, and passes in +1+ as the +:id+ parameter. Here's the +show+ action:
+h4. Zobrazení detailu
+
+Pokud kliknete na odkaz „Show“ ve výpisu příspěvků, ve vašem prohlížeči se načte stránka s URL typu +http://localhost:3000/posts/1+. Rails si požadavek na toto URL vyloží tak, že mají provést akci +show+ a předat jí +1+ jako parametr +id+. Ve výpisu webového serveru opět vidíme podrobnosti tohoto procesu:
+
+<shell>
+Started GET "/posts/1" for 127.0.0.1 at ...
+  Processing by PostsController#show as HTML
+  Parameters: {"id"=>"1"}
+</shell>
+
+Pojďme se podívat na zdrojový kód metody +show+:
 
 <ruby>
 def show
@@ -687,7 +720,7 @@ def show
 end
 </ruby>
 
-The +show+ action uses +Post.find+ to search for a single record in the database by its id value. After finding the record, Rails displays it by using +show.html.erb+:
+Vidíme, že pomocí metody +find+ — tu modelům poskytuje Active Record —, vyhledá jednotlivý záznam podle předaného +id+ a předá ho do _view_ v instanční proměnné +@post+. _View_ se pak vykresluje pomocí šablony +app/views/posts/show.html.erb+, která zobrazí jednotlivé atributy příspěvku:
 
 <erb>
 <p class="notice"><%= notice %></p>
@@ -712,9 +745,11 @@ The +show+ action uses +Post.find+ to search for a single record in the database
 <%= link_to 'Back', posts_path %>
 </erb>
 
-h4. Editing Posts
+h4. Úprava příspěvku
 
-Like creating a new post, editing a post is a two-part process. The first step is a request to +edit_post_path(@post)+ with a particular post. This calls the +edit+ action in the controller:
+Stejně jako vytvoření nového příspěvku je jeho úprava záležitost dvou kroků, a dvou akcí Rails kontroleru.
+
+Prvním krokem je HTTP požadavek na URL +/posts/1/edit+, které získáme pomocnou metodou +edit_post_path(@post)+. Na rozdíl od metody +new_post_path+ jí musíme předat konkrétní příspěvek (nebo jeho +id+). Tento požadavek vyvolá v kontroleru akci +edit+:
 
 <ruby>
 def edit
@@ -722,7 +757,7 @@ def edit
 end
 </ruby>
 
-After finding the requested post, Rails uses the +edit.html.erb+ view to display it:
+Kontroler načte příspěvek z databáze podle předaného +id+, a opět jej předá do view v instanční proměnné +@post+, přičemž _view_ samotné bude vykresleno za pomoci šablony +app/views/posts/edit.html.erb+:
 
 <erb>
 <h1>Editing post</h1>
@@ -734,9 +769,7 @@ After finding the requested post, Rails uses the +edit.html.erb+ view to display
 <% end %>
 </erb>
 
-Again, as with the +new+ action, the +edit+ action is using the +form+ partial, this time however, the form will do a PUT action to the PostsController and the submit button will display "Update Post"
-
-Submitting the form created by this view will invoke the +update+ action within the controller:
+Stejně jako akce +new+ využívá akce +edit+ parciální šablonu +form+. V tomto případě však bude formulář do aplikace odeslán pomocí (simulovaného) PUT požadavku a tlačítko na odeslání bude označené jako "Update Post". Tento požadavek v kontroleru zpracuje metoda +update+. Vypadá takto:
 
 <ruby>
 def update
@@ -756,11 +789,11 @@ def update
 end
 </ruby>
 
-In the +update+ action, Rails first uses the +:id+ parameter passed back from the edit view to locate the database record that's being edited. The +update_attributes+ call then takes the rest of the parameters from the request and applies them to this record. If all goes well, the user is redirected to the post's +show+ view. If there are any problems, it's back to the +edit+ view to correct them.
+Kontroler nejprve opět pomocí metody +find+ vyhledá v databázi příspěvek podle předaného +id+. Metodě +update_attributes+ — tu poskytuje modelům rovněž Active Record — předá všechny parametry týkající se příspevku, tedy +params[:post]+. Pokud vše dopadne dobře, příspěvek je v databázi aktualizován a prohlížeč je přesměrován na stránku s detailem příspěvku. Pokud došlo k chybám — typicky kvůli porušení validačních pravidel —, v prohlížeči je znovu zobrazena stránka s editačním formulářem.
 
-h4. Destroying a Post
+h4. Smazání příspevku
 
-Finally, clicking one of the +destroy+ links sends the associated id to the +destroy+ action:
+A konečně, pokud kliknete na odkaz „Destroy“, váš prohlížeč provede (simulovaný) DELETE HTTP požadavek na URL +/posts/1+. Rails takový požadavek směřují na metodu +destroy+ kontroleru:
 
 <ruby>
 def destroy
@@ -774,7 +807,9 @@ def destroy
 end
 </ruby>
 
-The +destroy+ method of an Active Record model instance removes the corresponding record from the database. After that's done, there isn't any record to display, so Rails redirects the user's browser to the index view for the model.
+Tato metoda vyhledá — stejně jako předchozí — příspěvek v databázi a pomocí metody +destroy+ poskytované modelům Active Record jej odstraní z databáze. Pak přesměruje prohlížeč na stránku s výpisem všech příspěvků.
+
+NOTE. Již dvakrát jsme v tomto návodu zmínili „simulovaný“ HTTP požadavek. Jak jsme uvedli výše, současné verze prohlížečů neumějí — na rozdíl od jiných HTTP klientů, jako je např. "_curl_":http://curl.haxx.se/ — odeslat PUT nebo DELETE požadavek. Rails však potřebují pracovat i s těmito HTTP metodami, aby mohly využít celou paletu RESTful architektury. Výše jste si mohli povšimnout například tohoto kódu: <tt>link_to 'Destroy', ... :method => :delete</tt>. Když se podíváte na výsledné HTML, uvidíte, že Rails k odkazu přidaly atribut <tt>data-method="delete"</tt>. Pro takové odkazy Rails dynamicky vytvoří formulář, který odešle POST požadavek s důležitým parametrem: +_method+, který je nastaven na hodnotu +DELETE+. Rails tento parametr berou v úvahu a „přetíží“ jím _skutečnou_ HTTP metodu požadavku (v tomto případě POST). Na tomto příkladě vidíte, jak vás Rails odstiňují od implementačních detailů REST architektury, jak jsme o tom mluvili na začátku.
 
 h3. Přidání druhého modelu
 
