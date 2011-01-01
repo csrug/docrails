@@ -1431,11 +1431,9 @@ Když si nyní aplikaci proklikáte, zjistíte, že můžete editovat příspěv
 
 Ukážeme si, jak pro zpřehlednění podobného kódu využít pomocné metody pro šablony (angl. _view helpers_).
 
-h3. Zobrazovací Helpery
+h3. Pomocné metody pro šablony
 
-Zobrazovací helpery se nacházejí v <tt>app/helpers</tt> a poskytují malé kousky znovupoužitelného kódu pro naše pohledy. V našem případě potřebujeme metodu, která zřetězí několik objektů použitím jejich názvu a spojí je čárkami. Jelikož je tahle helper metoda použita v šablone Post show, umístnime ji do PostsHelper.
-
-Otevřte <tt>app/helpers/posts_helper.rb</tt> a přidejte nasledovné:
+Soubory s pomocnými metodami se nacházejí ve složce <tt>app/helpers</tt>. Umožňují nám definovat metody, které jsou dostupné v šablonách a lze je používat opakovaně. V našem případě chceme spojit dohromady název (atribut _name_) několika objektů čárkami, tedy něco jako +jedna, dvě, tři+. Jelikož chceme tuto metodu využít při zobrazování příspěvků, vložíme ji do modulu +PostsHelper+ v souboru <tt>app/helpers/posts_helper.rb</tt>:
 
 <erb>
 module PostsHelper
@@ -1445,7 +1443,7 @@ module PostsHelper
 end
 </erb>
 
-Teď můžete upravit zobrazení v <tt>app/views/posts/show.html.erb</tt> aby vypadalo takhle:
+Nyní tuto metodu využijeme pro zobrazení štítků v šabloně <tt>app/views/posts/show.html.erb</tt>:
 
 <erb>
 <p class="notice"><%= notice %></p>
@@ -1480,6 +1478,8 @@ Teď můžete upravit zobrazení v <tt>app/views/posts/show.html.erb</tt> aby vy
 <%= link_to 'Upravit příspěvek', edit_post_path(@post) %> |
 <%= link_to 'Zpět na příspěvky', posts_path %> |
 </erb>
+
+Vidíte, že výsledný kód je mnohem přehlednější, nemluvě o tom, že správné chování této metody můžeme velmi snadno automatizovaně testovat (viz třída +PostsHelperTest+ v souboru +test/unit/helpers/posts_helper_test.rb+)
 
 h3. Co dál?
 
