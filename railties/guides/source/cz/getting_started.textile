@@ -1291,25 +1291,25 @@ Pokud nyní kliknete např. na odkaz „New Post“, zobrazí se vám dialogové
 
 Zkuste do něj vyplnit správné a nesprávné přihlašovací údaje a podívejte se, co se stane.
 
-NOTE: Využití HTTP Basic Authentication slouží pouze jako výukový příklad. Ve skutečné aplikaci, kde chcete zabezpečit přístup k určitým částem vaší aplikace využijete spíše některé z hotových řešení, jako je např. gem "_Clearance_":https://github.com/thoughtbot/clearance. Ten vám poskytuje nejenom infrastrukturu pro autentizaci uživatele pomocí _session_, ale též infrastrukturu a HTML šablony pro registraci nového uživatele, zaslání zapomenutého hesla, a další. Jeho použití je velmi jednoduché, podívejte se do jeho README.
+NOTE: Využití HTTP Basic Authentication slouží pouze jako výukový příklad. Ve skutečné aplikaci, kde chcete zabezpečit přístup k určitým částem vaší aplikace, využijete spíše některé z hotových řešení, jako je např. gem "_Clearance_":https://github.com/thoughtbot/clearance. Ten vám poskytuje nejenom infrastrukturu pro autentizaci uživatele pomocí _session_, ale též infrastrukturu a HTML šablony pro registraci nového uživatele, zaslání zapomenutého hesla, a další. Jeho použití je velmi jednoduché, podívejte se do jeho README.
 
-h3. Vytváření Multi-Model Formuláře
+h3. Formuláře pro úpravu více modelů najednou
 
-Další vlastností průměrného blogu je možnost štítkovat příspěvky. Pro jeji implementaci potřebuje vaše aplikace spolupracovat s více objekty v jednom formuláři. Rails poskytují podporu pro vnořené formuláře.
+Poměrně běžnou funkcí každého blogu je označování příspěvků štítky (angl. _tag_). Abychom mohli tuto funkci přidat do našeho blogu, musíme být schopni v jednom formuláři upravit více modelů. A právě takové _zanořené formuláře_ Rails podporují.
 
-Na ukázku přidáme podporu pro přidávání několika štítků každému příspěvku přímo ve formuláři, kde vytváříme příspěvek. Nejprve vytvořte nový model, který bude reprezentovat štítky:
+Vyzkoušíme si to tak, že ve formuláři, kde přidáváme nový příspěvek, jej budeme moci označit několika štítky. Nejprve vytvoříme pomocí generátoru model Tag, který bude reprezentovat štítek:
 
 <shell>
 $ rails generate model tag name:string post:references
 </shell>
 
-Opět, spustěte migrace pro vytvoření tabulky v databázi:
+Opět musíme následně spustit migrace pro vytvoření tabulky +tags+ v databázi:
 
 <shell>
 $ rake db:migrate
 </shell>
 
-Dále, pozměňte soubor +post.rb+ abyste vytvořili druhou stranu vazby a dali Rails věďet, (přes +accepts_nested_attributes_for+ makro) že hodláte měnit štítky přes příspěvky:
+Nyní musíme — stejně jako v případě komentářů — upravit i model Post v souboru +app/models/post.rb+, abychom deklarovali vztah mezi příspěvky a tagy i „z druhé strany“ a abychom dali pomocí deklarace +accepts_nested_attributes_for+ Rails vědět, že chceme štítky editovat zároveň s příspěvky:
 
 <ruby>
 class Post < ActiveRecord::Base
@@ -1325,16 +1325,16 @@ class Post < ActiveRecord::Base
 end
 </ruby>
 
-Volba +:allow_destroy+ při deklaraci nested attribute říka Rails ať zobrazí checkbox "Odstranit" v šabloně, kterou vytvoříme za chvíli. Volba +:reject_if+ zabraňuje ukládání nových štítků, které nemají vyplněny žádne atributy.
+Volba +allow_destroy+ v deklaraci pro vnořené atributy říká Rails, že mají v šabloně, kterou za chvíli vytvoříme, zobrazit _checkbox_ pro odstranění štítku. Volba +reject_if+ zabrání uložení štítku, který má všechny atributy prázdné.
 
-Upravíme +views/posts/_form.html.erb+ pro zobrazení partial view pro štítky:
+Nyní upravíme šablonu +views/posts/_form.html.erb+ tak, abychom mohli k příspěvku přidat štítky:
 
 <erb>
 <% @post.tags.build %>
 <%= form_for(@post) do |post_form| %>
   <% if @post.errors.any? %>
   <div id="errorExplanation">
-    <h2><%= pluralize(@post.errors.count, "error") %> zabránili tomuto příspevku, aby byl uložen:</h2>
+    <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
     <ul>
     <% @post.errors.full_messages.each do |msg| %>
       <li><%= msg %></li>
@@ -1364,30 +1364,32 @@ Upravíme +views/posts/_form.html.erb+ pro zobrazení partial view pro štítky:
 <% end %>
 </erb>
 
-Povšimněte si, že jsme změnili +f+ v +form_for(@post) do |f|+ na +post_form+ abychom to udělali jednodušší na porozumění.
+Na prvním řádku pomocí +@post.tags.build+ inicializujeme kolekci štítků pro příspěvek, který vytváříme nebo upravujeme.
 
-Tenhle příklad ukazuje další možnost zobrazovacího pomocníka, díky které můžeme předat lokálni proměnnou, v tomhle případě chceme, aby lokálni proměnná v častečné šabloně +form+ odkazovala na objekt +post_form+.
+Na dalším řádku si povšimněte jiného názvu proměnné obalující formulář, +post_form_+ místo pouhého +f+. Tuto změnu jsme provedli, aby bylo pochopitelnější, co se v celém procesu děje.
 
-Také jsme přidali <tt>@post.tags.build</tt> na vrchu formuláře, tím se ujistíme, že máme připraven nový štítek pro vyplnění jeho jména uživatelem. Jestli nevytváříte nový štítek, pak se formulář nezobrazí, ponevač neexistuje nový objekt štítku pro vytvoření.
+Také jsme využili schopnosti metody +render+ předávat do parciálních šablon proměnné pod jinými názvy: v našem případě +post_form+ jako +form+ (viz řádek +:locals => {:form => post_form}+).
 
-Těď vytvořte adresáŕ <tt>app/views/tags</tt> a v něm soubor <tt>_form.html.erb</tt> který obsahuje formulář pro štítek:
+Nyní vytvořte adresář <tt>app/views/tags</tt> a v něm soubor <tt>_form.html.erb</tt>, který bude obsahovat formulář pro štítek:
 
 <erb>
 <%= form.fields_for :tags do |tag_form| %>
   <div class="field">
-    <%= tag_form.label :name, 'Štítek:' %>
+    <%= tag_form.label :name, 'Tag:' %>
     <%= tag_form.text_field :name %>
   </div>
   <% unless tag_form.object.nil? || tag_form.object.new_record? %>
     <div class="field">
-      <%= tag_form.label :_destroy, 'Odstranit:' %>
+      <%= tag_form.label :_destroy, 'Remove:' %>
       <%= tag_form.check_box :_destroy %>
     </div>
   <% end %>
 <% end %>
 </erb>
 
-Nakonec upravíme <tt>app/views/posts/show.html.erb</tt> šablonu pro zobrazování našich štítků.
+Pro zobrazení formuláře zde využíváme pomocné metody Rails +fields_for+.
+
+Nakonec musíme upravit šablonu pro zobrazení detailu příspěvku (+views/posts/show.html.erb+) tak, aby vypisovala příslušné štítky:
 
 <erb>
 <p class="notice"><%= notice %></p>
@@ -1423,10 +1425,11 @@ Nakonec upravíme <tt>app/views/posts/show.html.erb</tt> šablonu pro zobrazová
 <%= link_to 'Zpět na příspěvky', posts_path %> |
 </erb>
 
-S těmito změnami můžete upravovat příspevky svého blogu a štítky přímo ve stejným zobrazení.
+Když si nyní aplikaci proklikáte, zjistíte, že můžete editovat příspěvky i štítky, tedy dva odlišné modely, v rámci jediného formuláře v jediném _view_.
 
+Řádek <tt>@post.tags.map { |t| t.name }.join(", ")</tt> ale v šabloně vypadá docela nepatřičně. _Views_ by neměly obsahovat žádnou aplikační logiku, protože to ztěžuje znovupoužitelnost, testovatelnost a především to ztěžuje čitelnost kódu.
 
-Jelikož je způsob <tt>@post.tags.map { |t| t.name }.join(", ")</tt> nešikovný, můžeme si poradit použitím helper metody.
+Ukážeme si, jak pro zpřehlednění podobného kódu využít pomocné metody pro šablony (angl. _view helpers_).
 
 h3. Zobrazovací Helpery
 
