@@ -1050,13 +1050,13 @@ Nejprve tedy z databáze získáme samotný příspěvek, metodou +Post.find+. M
 
 Nyní můžete na svůj „blog“ přidávat příspěvky i komentáře!
 
-h3. Refactoring
+h3. _Refactoring_
 
-Teď máme fungující články a jejich komentování. Když se ale podíváme do šablony +app/views/posts/show.html.erb+, zjistíme že kód je dlouhý a nešikovný. Můžeme použít partials (parciální/částečné šablony) k lepší čitelnosti kódu.
+Když nám příspěvky a komentáře fungují, měli bychom aplikaci trochu pročistit. Šablona +app/views/posts/show.html.erb+ nevypadá příliš elegantně — vylepšit ji můžeme právě pomocí _parciálních šablon_.
 
-h4. Vykreslení parciálních kolekcí
+h4. Použití parciální šablony pro zobrazení kolekce komentářů
 
-Nejdřív vytvoříme z kódu pro zobrazování komentáře u článku parciální šablonu. Vytvoříme soubor +app/views/comments/_comment.html.erb+ a do něj vložíme nasledující kód:
+Nejprve musíme z šablony vyjmout HTML kód pro zobrazení příspěvku a uložit ho do parciální šablony v souboru +app/views/comments/_comment.html.erb+:
 
 <erb>
 <p>
@@ -1070,7 +1070,7 @@ Nejdřív vytvoříme z kódu pro zobrazování komentáře u článku parciáln
 </p>
 </erb>
 
-Potom můžeme v šabloně +app/views/posts/show.html.erb+ udělat změny tak, aby vypadal následovně:
+Pak můžeme v šabloně +app/views/posts/show.html.erb+ zobrazit celou kolekci komentářů speciálním parametrem pro metodu +render+,  <tt><%= render @post.comments %></tt>:
 
 <erb>
 <p class="notice"><%= notice %></p>
@@ -1095,8 +1095,6 @@ Potom můžeme v šabloně +app/views/posts/show.html.erb+ udělat změny tak, a
 
 <h2>Přidat komentář:</h2>
 <%= form_for([@post, @post.comments.build]) do |f| %>
-  <%= f.error_messages %>
-
   <div class="field">
     <%= f.label :commenter %><br />
     <%= f.text_field :commenter %>
@@ -1116,16 +1114,16 @@ Potom můžeme v šabloně +app/views/posts/show.html.erb+ udělat změny tak, a
 <%= link_to 'Zpět na příspěvky', posts_path %> |
 </erb>
 
-This will now render the partial in +app/views/comments/_comment.html.erb+ once for each comment that is in the +@post.comments+ collection.  As the +render+ method iterates over the <tt>@post.comments</tt> collection, it assigns each comment to a local variable named the same as the partial, in this case +comment+ which is then available in the partial for us to show.
+Pro každý komentář z kolekce +@post.comments+ pak Rails vykreslí parciální šablonu +app/views/comments/_comment.html.erb+, kterou jsme právě vytvořili. Metoda +render+ prochází pole +@post.comments+ a každý komentář vloží do lokální proměnné s názvem +comment+.
 
-h4. Vykreslední partial formuláře
+h4. Použití parciální šablony pro zobrazení formuláře
 
 Pojďme také přesunout sekci „nový komentář“ do vlastního partialu. Vytvořte soubor +app/views/comments/_form.html.erb+ a do něj vložte:
 
+Formulář pro přidání nového formuláře můžeme také přesunout do zvláštní parciální šablony. Vytvořte soubor +app/views/comments/_form.html.erb+ a do něj přesuňte HTML kód:
+
 <erb>
 <%= form_for([@post, @post.comments.build]) do |f| %>
-  <%= f.error_messages %>
-
   <div class="field">
     <%= f.label :commenter %><br />
     <%= f.text_field :commenter %>
@@ -1140,7 +1138,7 @@ Pojďme také přesunout sekci „nový komentář“ do vlastního partialu. Vy
 <% end %>
 </erb>
 
-Pak změňte +app/views/posts/show.html.erb+ do následující podoby:
+Pak tuto parciální šablonu můžeme vložit do +app/views/posts/show.html.erb+:
 
 <erb>
 <p class="notice"><%= notice %></p>
@@ -1172,9 +1170,11 @@ Pak změňte +app/views/posts/show.html.erb+ do následující podoby:
 <%= link_to 'Back to Posts', posts_path %> |
 </erb>
 
-Druhý render pouze definuje částečnou šablonu kterou vykreslit - <tt>comments/form</tt>. Rails jsou dost chytré na to, aby poznaly lomítko v řetězci a pochopily že chcete vykreslit šablonu <tt>_form.html.erb</tt> ze složky <tt>app/views/comments</tt>.
+Řádek +render "comments/form"+ udává, že chceme zobrazit parciální šablonu +_form.html.erb+ z adresáře +app/views/comments+.
 
-Objekt +@post+ je dostupný v kterékoliv parciální šabloně, protože je definován jako instanční proměnná.
+TIP. Povšimněte si, že zatímco název fyzického souboru parciální šablony na disku začíná podtržítkem, když jej předáváme metodě +render+, podtržítko vynecháváme.
+
+Objekt +@post+ je dostupný ve všech šablonách, které ve _view_ renderujeme, neboť je deklarován jako instanční proměnná.
 
 h3. Mazání komentářů
 
