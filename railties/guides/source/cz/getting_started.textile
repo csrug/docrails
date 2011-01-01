@@ -1493,23 +1493,27 @@ Mezi další zdroje informací v češtině, které můžete využít, patří z
 * The "Diskusní skupina Rubyonrails.cz":http://groups.google.com/group/rubyonrailscz
 * The "Diskusní kanál #rubyonrails.cz":irc://irc.freenode.net/#rubyonrails.cz na IRC serveru "Freenode":http://freenode.net/
 
-h3. Seznam změn
+h3. O tomto dokumentu
 
-"Lighthouse ticket":http://rails.lighthouseapp.com/projects/16213-rails-guides/tickets/2
+Tento návod je českým překladem anglického originálu, který naleznete na adrese "http://guides.rubyonrails.org/getting_started.html":http://guides.rubyonrails.org/getting_started.html. Zdrojový text anglického originálu naleznete v repositáři Rails na serveru "Github":https://github.com/rails/rails/blob/master/railties/guides/source/getting_started.textile.
 
-* August 30, 2010: Minor editing after Rails 3 release by "Joost Baaij":http://www.spacebabies.nl
-* July 12, 2010: Fixes, editing and updating of code samples by "Jaime Iniesta":http://jaimeiniesta.com
-* May 16, 2010: Added a section on configuration gotchas to address common encoding problems that people might have by "Yehuda Katz":http://www.yehudakatz.com
-* April 30, 2010: Fixes, editing and updating of code samples by "Rohit Arondekar":http://rohitarondekar.com
-* April 25, 2010: Couple of more minor fixups "Mikel Lindsaar":credits.html#raasdnil
-* April 1, 2010: Fixed document to validate XHTML 1.0 Strict. "Jaime Iniesta":http://jaimeiniesta.com
-* February 8, 2010: Full re-write for Rails 3.0-beta, added helpers and before_filters, refactored code by "Mikel Lindsaar":credits.html#raasdnil
-* January 24, 2010: Re-write for Rails 3.0 by "Mikel Lindsaar":credits.html#raasdnil
-* July 18, 2009: Minor cleanup in anticipation of Rails 2.3.3 by "Mike Gunderloy":credits.html#mgunderloy
-* February 1, 2009: Updated for Rails 2.3 by "Mike Gunderloy":credits.html#mgunderloy
-* November 3, 2008: Formatting patch from Dave Rothlisberger
-* November 1, 2008: First approved version by "Mike Gunderloy":credits.html#mgunderloy
-* October 16, 2008: Revised based on feedback from Pratik Naik by "Mike Gunderloy":credits.html#mgunderloy (not yet approved for publication)
-* October 13, 2008: First complete draft by "Mike Gunderloy":credits.html#mgunderloy (not yet approved for publication)
-* October 12, 2008: More detail, rearrangement, editing by "Mike Gunderloy":credits.html#mgunderloy (not yet approved for publication)
-* September 8, 2008: initial version by "James Miller":credits.html#bensie (not yet approved for publication)
+Zdrojový text tohoto překladu naleznete v repositáři "rubyonrails-cz/docrails":https://github.com/rubyonrails-cz/docrails/commits/czech/railties/guides/source/cz/getting_started.textile (větev +czech+) na serveru Github.
+
+Historii tohoto dokumentu a přehled autorů naleznete ve "výpisu revizí":https://github.com/rubyonrails-cz/docrails/commits/czech/railties/guides/source/cz/getting_started.textile na serveru Github.
+
+Budeme vám vděční za *připomínky k překladu*. Využijte pro ně prosím "Issues":https://github.com/rubyonrails-cz/docrails/issues připojených k repositáři na serveru Github.
+
+*Opravy, doplňky nebo vylepšení překladu* nám můžete posílat prostřednictvím "Fork Queue":https://github.com/rubyonrails-cz/docrails/forkqueue připojené k repositáři na serveru Github.
+
+Postup je jednoduchý:
+
+* Klikněte na odkaz "Fork" u repositáře "rubyonrails-cz/docrails":https://github.com/rubyonrails-cz/docrails/, abyste vytvořili kopii repositáře provázanou s původním.
+* Pracujte ve větvi +czech+, na rozsáhlejší úpravy vytvořte tematickou větev (např. +adding_ajax_chapter+).
+* Dodržujte prosím zvyklosti předchozích autorů, ať již se týkají samotného překladu, slovotvorby, používání anglických výrazů nebo formátu _commit message_.
+* Zašlete správcům repositáře požadavek na vložení vaší práce pomocí tzv. "Pull Request":http://help.github.com/pull-requests/
+
+Uvítáme též *překlady "ostatních návodů"*:http://edgeguides.rubyonrails.org/ z angličtiny. Nejdříve si prosím v "diskusní skupině":http://groups.google.com/group/rubyonrailscz ověřte, že na daném překladu již nepracuje někdo jiný. Chceme vás upozornit, abyste překladu věnovali dostatečnou péči a pozornost. Překlady provedené nedbale, připomínající automatický překlad, převádějící otrocky anglický originál do češtiny nemají velké šance na přijetí.
+
+Pro překlad nového návodu platí stejná pravidla jako pro úpravy návodu uvedené výše — v každém případě vytvořte pro vaši práci novou větev, např. +active_record_basics+. Pravidelně synchronizujte zdrojový anglický překlad s mateřským repositářem.
+
+Pro diskusi překladů prosím využijte diskusní fórum nebo kanál.
