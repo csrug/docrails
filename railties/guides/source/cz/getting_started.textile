@@ -1238,11 +1238,13 @@ class Post < ActiveRecord::Base
 end
 </ruby>
 
-h3. Bezpečnost
+h3. Zabezpečení
 
-Kdybyste nyní poskytli veřejný přístup ke svému blogu, kdokoliv by byl schopen přidat, upravovat a mazat příspěvky a komentáře.
+Pokud bychom nyní spustili svůj blog veřejně, kdokoliv by mohl přidávat, upravovat nebo mazat příspěvky a komentáře. To určitě není to, co chceme.
 
-Rails nabízejí velmi jednoduchý HTTP autentizační systém, který bude v této situaci hezky fungovat. Nejprve umožníme jednoduchou HTTP autentizaci v našem controlleru <tt>app/controllers/application_controller.rb</tt>:
+Rails obsahují podporu pro jednoduchou autentizaci pomocí tzv. _HTTP Basic Authentication_. Vyzkoušíme si to.
+
+Nejprve přidáme metodu pro HTTP autentizaci do hlavního kontroleru, +ApplicationController+, v souboru <tt>app/controllers/application_controller.rb</tt>:
 
 <ruby>
 class ApplicationController < ActionController::Base
@@ -1259,41 +1261,37 @@ class ApplicationController < ActionController::Base
 end
 </ruby>
 
-Můžete samozřejmě změnit uživatelské jméno a heslo na cokoliv chcete. Tuto metodu dáváme do +ApplicationController+ aby byla přístupná všem našim controllerům.
+Uživatelské jméno a heslo můžete samozřejmě změnit na jakékoliv jiné. Ve skutečné aplikaci by navíc bylo uloženo spíše v konfiguraci aplikace, než přímo v kódu. Metoda +authenticate+ je dostupná všem kontrolerům, neboť z +ApplicationController+ dědí.
 
-Následně potřebujeme mít v +PostsController+ nějaký způsob blokování přístupu k různým akcím pokud uživatel není autentizován. Zde můžeme použít Rails metodu <tt>before_filter</tt>, která nám umožňuje určit, že Rails musí spustit metodu a až následně povolit přístup k vyžádané akci, pokud to tato metoda povolí.
-
-Použítí before filteru deklarujeme na začátku našeho +PostController+. V tomto případě chceme, aby byl uživatel přihlášen u každé akce, kromě +index+ a +show+, takže napíšeme:
+V kontroleru +PostsController+ teď musíme nějak zařídit, aby určité akce byly dostupné každému uživateli aplikace a určité akce pouze přihlášeným uživatelům. K tomu můžeme velmi dobře využít tzv. <tt>before_filter</tt>, který nám umožnuje specifikovat, že před všemi (anebo jen některými) akcemi kontroleru musí Rails zavolat určitou metodu; v našem případě metodu +authenticate+:
 
 <ruby>
 class PostsController < ApplicationController
 
   before_filter :authenticate, :except => [:index, :show]
 
-  # GET /posts
-  # GET /posts.xml
-  def index
-    @posts = Post.all
-    respond_to do |format|
-# snipped for brevity
+  # Zbytek kódu kontroleru
 </ruby>
 
-Také mazání komentářů chceme povolit pouze přihlášeným uživatelům, takže v +CommentsController+ napíšeme:
+Díky čitelnosti Ruby je deklarace poměrně jasná: před každou akcí kontroleru zavolej metodu +authenticate+, pokud se nejedná o metody +index+ a +show+ (ty zobrazují obsah našeho blogu návětěvníkům).
+
+Rovnež mazání komentářů chceme povolit pouze přihlášeným uživatelům, proto do +CommentsController+ doplníme:
 
 <ruby>
 class CommentsController < ApplicationController
 
   before_filter :authenticate, :only => :destroy
 
-  def create
-    @post = Post.find(params[:post_id])
-# snipped for brevity
+  # Zbytek kódu kontroleru
 </ruby>
 
-Nyní pokud se pokusíte vytvořit příspěvek, uvítá vás základní HTTP autentizační výzva
+Pokud nyní kliknete např. na odkaz „New Post“, zobrazí se vám dialogové okno s výzvou pro přihlášení:
 
 !images/challenge.png(Basic HTTP Authentication Challenge)!
 
+Zkuste do něj vyplnit správné a nesprávné přihlašovací údaje a podívejte se, co se stane.
+
+NOTE: Využití HTTP Basic Authentication slouží pouze jako výukový příklad. Ve skutečné aplikaci, kde chcete zabezpečit přístup k určitým částem vaší aplikace využijete spíše některé z hotových řešení, jako je např. gem "_Clearance_":https://github.com/thoughtbot/clearance. Ten vám poskytuje nejenom infrastrukturu pro autentizaci uživatele pomocí _session_, ale též infrastrukturu a HTML šablony pro registraci nového uživatele, zaslání zapomenutého hesla, a další. Jeho použití je velmi jednoduché, podívejte se do jeho README.
 
 h3. Vytváření Multi-Model Formuláře
 
