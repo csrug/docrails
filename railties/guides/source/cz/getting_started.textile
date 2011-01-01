@@ -1481,20 +1481,16 @@ Nyní tuto metodu využijeme pro zobrazení štítků v šabloně <tt>app/views/
 
 Vidíte, že výsledný kód je mnohem přehlednější, nemluvě o tom, že správné chování této metody můžeme velmi snadno automatizovaně testovat (viz třída +PostsHelperTest+ v souboru +test/unit/helpers/posts_helper_test.rb+)
 
-h3. Co dál?
+h3. Kam dál?
 
-Teď, když jste vytvořili svou první Rails aplikaci, nemělo by vám dělat problém vylepšit si ji a experimentovat s ní. Nemusíte však dělat všechno bez nápovědy. Když budete potřebovat pomoc ohledně vývoje v Rails, neváhejte použít tyhle zdroje:
+Za pomoci tohoto průvodce jste vytvořili webovou aplikaci, jednoduchý blog, který návštěvníkům umožňuje prohlížení příspěvků a přidávání komentářů, zatímco přihlášeným uživatelům správu příspěvků a komentářů. Začali jsme s prázdnou Rails aplikací a postupně se dozvěděli, jak lze využít zabudované generátory pro rychlejší vytvoření součástí aplikace, jak mezi sebou propojit Active Record modely, jak provázat Active Record modely a HTML formuláře nebo jak zpřehlednit kód aplikace využitím parciálních šablon a pomocných metod.
 
-* The "Ruby on Rails guide":index.html
-* The "Ruby on Rails tutorial":http://railstutorial.org/book
-* The "Ruby on Rails mailing list":http://groups.google.com/group/rubyonrails-talk
-* The "#rubyonrails":irc://irc.freenode.net/#rubyonrails kanál na irc.freenode.net
-* The "Rails Wiki":http://wiki.rubyonrails.org/
+Mnoho věcí jsme samozřejmě museli vynechat — ať již se jedná o složitější dotazy do databáze nebo vztahy mezi modely, pokročilejší konfigurace pravidel směrování, apod. Připomínáme proto, že mnoho dalších návodů v angličtině naleznete na adrese "http://guides.rubyonrails.org":http://guides.rubyonrails.org/. Dokumentaci k jednotlivým součástem Rails naleznete na adrese "http://railsapi.com":http://railsapi.com/.
 
-Rails také nabízí vstavanou nápovědu, kterou si můžete vygenerovat použitím nástroje rake v příkazovém řádku:
+Mezi další zdroje informací v češtině, které můžete využít, patří zejména:
 
-* Spuštění +rake doc:guides+ uloží kompletní kopii Rails Guides do adresáře +doc/guides+ vaši applikace. Otevřte +doc/guides/index.html+ ve svém prohlížeči pro jeji prohlížení.
-* Spuštění +rake doc:rails+ uloží kompletní kopii API dokumentace pro Rails do adresáře +doc/api+ vaši aplikace. Otevřte +doc/api/index.html+ ve svém prohlížeči pro jeji prohlížení.
+* The "Diskusní skupina Rubyonrails.cz":http://groups.google.com/group/rubyonrailscz
+* The "Diskusní kanál #rubyonrails.cz":irc://irc.freenode.net/#rubyonrails.cz na IRC serveru "Freenode":http://freenode.net/
 
 h3. Vychytávky pro konfiguraci
 
