@@ -1178,9 +1178,9 @@ Objekt +@post+ je dostupný ve všech šablonách, které ve _view_ renderujeme,
 
 h3. Mazání komentářů
 
-Další důležitou funkcí na blogu je možnost mazat SPAMové komentáře. K tomu potřebujeme implemetovat nějaký ten odkaz ve view a +DELETE+ akci v +CommentsController+.
+Důležitou funkcí našeho blogu je mazání komentářů, které obsahují _spam_. Abychom mohli komentáře mazat, musíme do _view_ přidat odkaz a do kontroleru +CommentsController+ akci +destroy+.
 
-Nejprve tedy přidejme odkaz na smazání v +app/views/comments/_comment.html.erb+ partialu:
+Začneme přidáním odkazu v šabloně +app/views/comments/_comment.html.erb+:
 
 <erb>
 <p>
@@ -1200,7 +1200,7 @@ Nejprve tedy přidejme odkaz na smazání v +app/views/comments/_comment.html.er
 </p>
 </erb>
 
-Kliknutí na tento nový odkaz "Destroy Comment" spustí akci <tt>DELETE /posts/:id/comments/:id</tt> v našem +CommentsController+, který pak podle ní najde komentář, který chceme vymazat, takže přidejme akci destroy do našeho controlleru:
+Pokud klikneme na tento odkaz, Rails vyvolají pravidlo směrování <tt>DELETE /posts/:post_id/comments/:id</tt>, které směřuje na metodu +destroy+ kontroleru +CommentsController+. Pojďme ji tedy přidat:
 
 <ruby>
 class CommentsController < ApplicationController
@@ -1215,18 +1215,19 @@ class CommentsController < ApplicationController
     @post = Post.find(params[:post_id])
     @comment = @post.comments.find(params[:id])
     @comment.destroy
-    redirect_to post_path(@post)
+    redirect_to post_path(@post), :notice => 'Comment was deleted'
   end
 
 end
 </ruby>
 
-Akce +destroy+ najde příspěvek na který se díváme, vyhledá kometář v kolekci <tt>@post.comments</tt> a pak ho vymaže z databáze a pošle nás zpět na 'show' akci příspěvku.
+Tato metoda vyhledá v databázi příspěvek podle +post_id+, a vyhledá připojený komentář podle +id+. Smaže jej z databáze, a přesměruje zpět na stránku příspěvku. Zároveň nastaví notifikaci _Comment was deleted_, která zobrazena bude na cílové stránce. 
 
+h4. Mazání asociovaných objektů
 
-h4. Mazání návazných objektů
+Pokud vymažeme z databáze příspěvek, komentáře, které jsou k němu připojeny je třeba vymazat rovněž. V opačném případě by jen zabíraly místo v databázi, a v případě složitější aplikace by takové „osiřelé“ komentáře mohly způsobit nesprávné chování.
 
-Pokud vymažete příspěvek, pak návazné komentáře je také třeba vymazat. Jinak budou prostě jen zabírat místo v databázi. Rails vám k tomutu účelu umožňuje použít možnost +dependent+ na relaci mezi modely. Upravte Post model v +app/models/post.rb+ následovně:
+Rails nám umožňují nastavit mazání asociovaných objektů přímo při deklaraci asociace, bez toho, aniž bychom se o mazání komentářů museli starat sami (např. v metodě +PostsController#destroy+). Do modelu Post v souboru +app/models/post.rb+ prostě přidáme:
 
 <ruby>
 class Post < ActiveRecord::Base
