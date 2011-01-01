@@ -18,6 +18,7 @@ Tento průvodce je zamýšlen pro začátečníky, kteří chtějí začít s Ra
 * Jazyk "Ruby":http://www.ruby-lang.org/en/downloads ve verzi 1.8.7 nebo 1.9.2
 * Balíčkovací systém "RubyGems":http://rubyforge.org/frs/?group_id=126
 * Funkční instalaci databáze "SQLite3":http://www.sqlite.org
+* Textový editor, který umí ukládat v kódování UTF-8
 
 Rails je framework pro tvorbu webových aplikací, využívající programovací jazyk Ruby. Pokud nemáte žádnou předchozí zkušenost s Ruby, může pro vás být náročné pustit se rovnou do Rails. Na webu je k dispozici mnoho volně dostupných zdrojů v angličtině, mimojiné:
 
@@ -223,7 +224,7 @@ development:
   timeout: 5000
 </yaml>
 
-NOTE: V tomto návodu používáme pro ukládání dat SQLite3, jelikož nepotřebuje žádnou konfiguraci a „prostě funguje“. Rails samotné podporují rovněž MySQL and PostgreSQL a existují pluginy pro mnoho ostatních databázových systému. Pokud používáte v produkčním prostředí nějakou konkrétní databázi, je velmi pravděpodobné, že pro ni bude k dispozici ten správný adaptér, abyste ji mohli používat v Rails.
+NOTE: V tomto návodu používáme pro ukládání dat SQLite3, jelikož nepotřebuje žádnou konfiguraci a „prostě funguje“. Rails samotné podporují rovněž MySQL and PostgreSQL a existují pluginy pro mnoho ostatních databázových systému. Pokud používáte v produkčním prostředí nějakou konkrétní databázi, je velmi pravděpodobné, že pro ni bude k dispozici ten správný adaptér, abyste ji mohli používat v Rails. Ať již použijete jakoukoliv databázi, nastavte ji tak, aby ukládala data ve formátu UTF-8 (viz konfigurace databáze MySQL níže).
 
 h5. Konfigurace databáze MySQL
 
@@ -1491,25 +1492,6 @@ Mezi další zdroje informací v češtině, které můžete využít, patří z
 
 * The "Diskusní skupina Rubyonrails.cz":http://groups.google.com/group/rubyonrailscz
 * The "Diskusní kanál #rubyonrails.cz":irc://irc.freenode.net/#rubyonrails.cz na IRC serveru "Freenode":http://freenode.net/
-
-h3. Vychytávky pro konfiguraci
-
-Nejjednoduchší způsub, jak pracovat s Rails je ukládat všechna externí data ve formáte UTF-8. Jestli ne, Ruby knihovny a Rails budou často schopni konvertovat vaše nativní data do UTF-8, ale ne vždy to funguje spolehlivě, takže je lepší ujistit se, že všechna externí data jsou v UTF-8.
-
-Jestli jste v něčem z toho udělali chybu, nejčastějsí příznak je černý diamant s otazníkem vevnitř zobrazujíci se v prohlížeči. Další častý příznak je znak jako například "Ã¼" zobrazujíci se namísto "ü". Rails dělají několik interních kroků, aby zmírnili příčiny těchto problémů, které můžou být automaticky zjištěny a opraveny. Nicméně, jestli máte data, která nejsou uložena v UTF-8, může se stát, že se objeví problémy, které nemůžou být automaticky zjištěny a opraveny v Rails.
-
-Dva časté zdroje dat, která nejsou v UTF-8:
-* Váš textový editor: Většina textových editorů (jako například TextMate), ukládá soubory
-  předvoleně v UTF-8. Jestli to váš editor nedělá, může se stát, že speciální znaky, které
-  použijete ve vašich šablonách (například é), se v prohlížeči zobrazí jako diamant
-  s otazníkem vevnitř. To se taky týká vašich I18N překladových souború. Většina editorů,
-  které neukládají předvoleně do UTF-8 (jako například některé verze Dreamwaver-u) poskytují
-  způsob, jak změnit předvolené ukládání na UTF-8. Udělejte to.
-* Vaše databáza. Rails implicitně konvertují data z vaši databáze při výběru/zápisu.
-  Takže jestli vaše databáza nepoužívá interně UTF-8, nemusí být schopna ukládat všechny znaky,
-  které uživatelé zadají. Například, jestli vaše databáza interně používa Latin-1 a uživatelé
-  zadají Ruské, Hebrejské nebo Japonské znaky, data se navždy stratí v momentě, kdy se dostanou
-  do databázy. Jestli to je možné, používejte UTF-8 jako interní úložiště vaši databáze.
 
 h3. Seznam změn
 
