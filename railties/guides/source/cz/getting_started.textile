@@ -188,7 +188,7 @@ Vidímě, že Rails generátor vytvořil v aktuálním adresáři složku pojmen
 |log/|Logy aplikace.|
 |public/|Jediná složka, která je přístupná přes web. Obsahuje obrázky, JavaScript, stylové předpisy (CSS) a další statické soubory.|
 |script/|Obsahuje skript <tt>rails</tt>, který spouští vaši aplikaci ve vývojovém prostředí, generuje kód, spouští interaktivní konzoli aplikace, a podobně.|
-|test/|Jednotkové a funkční testy, testovací data a ostatní nástroje pro automatizované testování aplikace. Ty jsou popsány v návodu "Testing Rails Applications":testing.html|
+|test/|Jednotkové a funkční testy, testovací data a ostatní nástroje pro automatizované testování aplikace. Ty jsou popsány v návodu "Testing Rails Applications":http://guides.rubyonrails.org/testing.html|
 |tmp/|Dočasné soubory|
 |vendor/|Místo pro zdrojové soubory třetích stran. V typické Rails aplikaci jsou to například gemy a pluginy rozšiřující funkce Rails, případně též zdrojový kód Rails.|
 
@@ -338,7 +338,7 @@ Deklarace +root :to => "home#index"+ říká Rails, že má požadavky na URL "/
 
 Pokud si nyní v prohlížeči zobrazíte stránku "http://localhost:3000":http://localhost:3000, uvidíte +Ahoj, Rails!+.
 
-NOTE. Více informací ohledně směrování požadavků naleznete v návodu "Rails Routing from the Outside In":routing.html.
+NOTE. Více informací ohledně směrování požadavků naleznete v návodu "Rails Routing from the Outside In":http://guides.rubyonrails.org/routing.html.
 
 h3. Rychlý start s využitím nástroje generátoru „lešení“ (_scaffolding_)
 
@@ -352,7 +352,7 @@ V případě naší aplikace, blogu, můžeme začít vytvořením „lešení�
 $ rails generate scaffold Post name:string title:string content:text
 </shell>
 
-NOTE. I když vám _scaffolding_ pomůže rychle začít, univerzální kód, který vygeneruje, vám nemusí zcela vyhovovat. Zcela jistě budete chtít vygenerovaný kód upravit. Mnoho zkušených Rails vývojářů _scaffolding_ nepoužívá, a raději píše zdrojový kód úplně od začátku. Rails však poskytují ještě zajímavější možnost: upravit přímo šablony pro generované modely, kontrolery, šablony, helpery, či soubory s testy. Další informace najdete v návodu "Creating and Customizing Rails Generators & Templates":generators.html.
+NOTE. I když vám _scaffolding_ pomůže rychle začít, univerzální kód, který vygeneruje, vám nemusí zcela vyhovovat. Zcela jistě budete chtít vygenerovaný kód upravit. Mnoho zkušených Rails vývojářů _scaffolding_ nepoužívá, a raději píše zdrojový kód úplně od začátku. Rails však poskytují ještě zajímavější možnost: upravit přímo šablony pro generované modely, kontrolery, šablony, helpery, či soubory s testy. Další informace najdete v návodu "Creating and Customizing Rails Generators & Templates":http://guides.rubyonrails.org/generators.html.
 
 Generátor vytvoří ve vaší aplikaci 15 souborů, několik složek, a jeden soubor upraví. Pojďme si výsledek prohlédnout:
 
@@ -397,7 +397,7 @@ class CreatePosts < ActiveRecord::Migration
 end
 </ruby>
 
-Tato migrace vytváří dvě metody: +up+, volanou když v databázi provádíme změny, které tato migrace definuje, a +down+, volanou v případě, že je později chcete vrátit. V našem případě medoda +up+ vytvoří tabulku +posts+ se dvěma sloupci formátu +string+ (krátký text, +VARCHAR+) a jeden sloupec formátu +text+. Vytvoří také dva sloupce pro časové značky (_timestamp_) které udržují informaci o času vytvoření a úpravě záznamů. Více informací o migracích naleznete v návodu "Rails Database Migrations":migrations.html.
+Tato migrace vytváří dvě metody: +up+, volanou když v databázi provádíme změny, které tato migrace definuje, a +down+, volanou v případě, že je později chcete vrátit. V našem případě medoda +up+ vytvoří tabulku +posts+ se dvěma sloupci formátu +string+ (krátký text, +VARCHAR+) a jeden sloupec formátu +text+. Vytvoří také dva sloupce pro časové značky (_timestamp_) které udržují informaci o času vytvoření a úpravě záznamů. Více informací o migracích naleznete v návodu "Rails Database Migrations":http://guides.rubyonrails.org/migrations.html.
 
 Nyní můžete pomocí příkazu +rake+ migrace provést:
 
@@ -427,7 +427,7 @@ Nyní můžeme přidat odkaz na náš blog na domovskou stránku aplikace, ktero
 
 Metoda +link_to+ je jednou z pomocných funkcí zabudovaných v Rails, které jsou dostupné v šablonách (_views_). Vytvoří hypertextový odkaz podle předaných parametrů: zobrazeného textu a URL odkazu — v tomto případě je tímto URL cesta k výpisu příspěvků.
 
-NOTE. Možná vás zarazí metoda +posts_path+. Jedná se o pomocnou metodu, kterou vám Rails poskytují proto, abyste mohli udržovat pravidla směrování (_routing_) na jediném místě aplikace, v konfiguračním souboru +config/routes.rb+, a pomocí metod jako +posts_path+ nebo +new_post_path+ je pak předávali v aplikaci jako výsledené URL. Všechny pravidla směrování ve vaší aplikaci si můžete zobrazit příkazem +rake routes+. Podrobné informace o směrování v Rails naleznete v návodu "Rails Routing from the Outside In":routing.html.
+NOTE. Možná vás zarazí metoda +posts_path+. Jedná se o pomocnou metodu, kterou vám Rails poskytují proto, abyste mohli udržovat pravidla směrování (_routing_) na jediném místě aplikace, v konfiguračním souboru +config/routes.rb+, a pomocí metod jako +posts_path+ nebo +new_post_path+ je pak předávali v aplikaci jako výsledené URL. Všechny pravidla směrování ve vaší aplikaci si můžete zobrazit příkazem +rake routes+. Podrobné informace o směrování v Rails naleznete v návodu "Rails Routing from the Outside In":http://guides.rubyonrails.org/routing.html.
 
 h4. Práce s příspěvky v prohlížeči
 
@@ -462,7 +462,7 @@ class Post < ActiveRecord::Base
 end
 </ruby>
 
-Tyto deklarace zajistí, že všechny příspěvky budou obsahovat název (_name_) a titulek (_title_), a že titulek bude mít alespoň 5 znaků. Rails obsahují validace pro mnoho různých podmínek: ověření existence či unikátní hodnoty nějakého atributu (sloupce v databázi), shody textového atributu se zadaným regulárním výrazem, shodu atributu s některým prvkem ze zadaného rozsahu a mnoho dalších. Validace umí ověřovat i validitu asociovaných modelů. Více informací nalezenete v návodu "Active Record Validations and Callbacks":active_record_validations_callbacks.html.
+Tyto deklarace zajistí, že všechny příspěvky budou obsahovat název (_name_) a titulek (_title_), a že titulek bude mít alespoň 5 znaků. Rails obsahují validace pro mnoho různých podmínek: ověření existence či unikátní hodnoty nějakého atributu (sloupce v databázi), shody textového atributu se zadaným regulárním výrazem, shodu atributu s některým prvkem ze zadaného rozsahu a mnoho dalších. Validace umí ověřovat i validitu asociovaných modelů. Více informací nalezenete v návodu <a href="http://guides.rubyonrails.org/active_record_validations_callbacks.html">Active Record Validations and Callbacks</a>.
 
 h4. Konzole aplikace
 
@@ -514,7 +514,7 @@ end
 
 +Post.all+ říká modelu +Post+, aby z databáze načetl všechny příspěvky. Výstupem tohoto příkazu je pole s příspěvky, které uložíme do instanční proměnné nazvané +@posts+.
 
-TIP: Metoda +all+ odpovídá SQL dotaz +SELECT "posts".* FROM "posts"+. To si můžete snadno ověřit: po načtení stránky stránky v prohlížeči se podívejte na výpis v okně nebo záložce terminálu, kde jste spustili webový server s aplikací. Active Record podporuje samozřejmě složité vyhledávací, agregační nebo asociační dotazy. Více informací naleznete v návodu "Active Record Query Interface":active_record_querying.html.
+TIP: Metoda +all+ odpovídá SQL dotaz +SELECT "posts".* FROM "posts"+. To si můžete snadno ověřit: po načtení stránky stránky v prohlížeči se podívejte na výpis v okně nebo záložce terminálu, kde jste spustili webový server s aplikací. Active Record podporuje samozřejmě složité vyhledávací, agregační nebo asociační dotazy. Více informací naleznete v návodu "Active Record Query Interface":http://guides.rubyonrails.org/active_record_querying.html.
 
 Kód mezi +do ... end+ se v Ruby nazývá „blok“ a často se používá podobně jako např. anonymní funkce v jQuery (+$.get('/ajax', function(data) { ... }+), které možná znáte lépe.
 
@@ -561,7 +561,7 @@ Ruby kód v šabloně prochází pole +@posts+ a zobrazuje obsah jednotlivých p
 
 NOTE. V předchozích verzích Rails jste museli použít metodu <tt>h</tt>, aby byl případný HTML kód, který by dynamický obsah vypisovaný do stránky mohl obsahovat, ošetřen a převeden na entity (tzv. _escapován_). V Rails 3 a vyšších verzích je toto ošetření implicitní, a jakýkoliv HTML kód je na entity převáděn automaticky. Pokud chcete získat „surové“ HTML, použijte pomocnou metodu +raw+: +&lt;%= raw post.name %&gt;+ nebo rozšíření třídy +String#html_safe+: +&lt;%= post.name.html_safe %&gt;+
 
-TIP: Podrobnosti o šablonách a jejich zobrazování najdete v návodu "Layouts and Rendering in Rails":layouts_and_rendering.html.
+TIP: Podrobnosti o šablonách a jejich zobrazování najdete v návodu "Layouts and Rendering in Rails":http://guides.rubyonrails.org/layouts_and_rendering.html.
 
 h4. Ůprava _layoutu_
 
@@ -650,7 +650,7 @@ Když se podíváte na soubor obsahující parciální šablonu pro formulář, 
 
 Parciální šablona má stejně jako hlavní šablona k dispozici instanční proměnné nastavené v kontroleru, v tomto případě +@post+.
 
-Více informací o parciálních šablonách najdete v návodu "Layouts and Rendering in Rails":layouts_and_rendering.html#using-partials.
+Více informací o parciálních šablonách najdete v návodu "Layouts and Rendering in Rails":http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials.
 
 Blok předaný metodě +form_for+ zobrazí HTML formulář. V rámci tohoto bloku máte k dispozici pomocné metody pro vykreslení formulářových prvků. Deklarace +f.text_field :name+, například, říká Rails, že mají zobrazit textové políčko, a propojit je s atributem +name+ příspěvku +@post+. Tyto pomocné metody můžete využít jen ve spojení s atributy modelu (v našem případě je to +name+, +title+, apod.) Samozřejmě byste mohli celý formulář zapsat v přímo v HTML – ale v Rails využíváme pro zobrazení formuláře metodu +form_for+ a ostatní pomocné metody neboť výsledný kód je kratší, přehlednější a formulář je provázán s konkrétní instancí modelu.
 
@@ -905,7 +905,7 @@ Tedy: _příspěvek má mnoho komentářů_.
 
 Tyto dvě jednoduché deklarace přidají do modelů obrovský kus funkcionality. Kupříkladu, pokud máme v proměnné +@post+ uložen příspěvek, všechny komentáře pro tento příspěvek získáme — jako pole (_Array_) — zápisem +@post.comments+.
 
-TIP: Více informací o Active Record vazbách najdete v návodu "Active Record Associations":association_basics.html.
+TIP: Více informací o Active Record vazbách najdete v návodu "Active Record Associations":http://guides.rubyonrails.org/association_basics.html.
 
 h4. Přidání pravidla směrování pro komentáře
 
