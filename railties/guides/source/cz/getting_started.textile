@@ -563,7 +563,7 @@ NOTE. V předchozích verzích Rails jste museli použít metodu <tt>h</tt>, aby
 
 TIP: Podrobnosti o šablonách a jejich zobrazování najdete v návodu "Layouts and Rendering in Rails":http://guides.rubyonrails.org/layouts_and_rendering.html.
 
-h4. Ůprava _layoutu_
+h4. Úprava _layoutu_
 
 Konkrétní šablona pro akci kontroleru (tedy _view_) je jen část toho, jak Rails zobrazují HTML ve vašem prohlížeči. V Rails najdeme také tzv. _layouty_, což jsou kontejnery pro jednotlivé šablony (_view_). Když Rails vykreslují tuto konkrétní šablonu, vloží ji do této „obalující šablony“, _layoutu_. V předchozích verzích Rails generátor vytvářel zvláštní _layout_ pro každý kontroler. To se v Rails 3 změnilo a generátor vytvoří jen jeden _layout_, v souboru +app/views/layouts/application.html.erb+, společný pro celou aplikaci. (Můžete samozřejmě přidávat _layouty_ vlastní a používat v každém kontroleru, nebo i v každé z jejich akcí _layout_ jiný.)
 
