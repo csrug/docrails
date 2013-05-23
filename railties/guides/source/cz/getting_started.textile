@@ -381,7 +381,7 @@ Když se podíváte do souboru +db/migrate/20100207214725_create_posts.rb+ (pama
 
 <ruby>
 class CreatePosts < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :posts do |t|
       t.string :name
       t.string :title
@@ -390,14 +390,10 @@ class CreatePosts < ActiveRecord::Migration
       t.timestamps
     end
   end
-
-  def self.down
-    drop_table :posts
-  end
 end
 </ruby>
 
-Tato migrace vytváří dvě metody: +up+, volanou když v databázi provádíme změny, které tato migrace definuje, a +down+, volanou v případě, že je později chcete vrátit. V našem případě medoda +up+ vytvoří tabulku +posts+ se dvěma sloupci formátu +string+ (krátký text, +VARCHAR+) a jeden sloupec formátu +text+. Vytvoří také dva sloupce pro časové značky (_timestamp_) které udržují informaci o času vytvoření a úpravě záznamů. Více informací o migracích naleznete v návodu "Rails Database Migrations":http://guides.rubyonrails.org/migrations.html.
+Tato migrace vytváří metodu s názvem +change+ volanou ve chvíli, kdy spustíte tuto migraci. Akce definované touto metodou je možné později vrátit, Rails vědí, jak provedené úpravy vzít zpět. Když nyní migraci spustíme, vytvoří tabulku +posts+ se dvěma sloupci formátu +string+ (krátký text, +VARCHAR+) a jeden sloupec formátu +text+. Vytvoří také dva sloupce pro časové značky (_timestamp_), které udržují informaci o času vytvoření a úpravě záznamů. Více informací o migracích naleznete v návodu "Rails Database Migrations":http://guides.rubyonrails.org/migrations.html.
 
 Nyní můžete pomocí příkazu +rake+ migrace provést:
 
@@ -441,14 +437,17 @@ Gratulujeme, právě jste nasedli na Rails! A teď je na čase podívat se, jak 
 
 h4. Model
 
-Soubor obsahující definici modelu, +app/models/post.rb+, asi nemůže být jednodušší:
+Soubor obsahující definici modelu, +app/models/post.rb+, vypadá takto:
 
 <ruby>
 class Post < ActiveRecord::Base
+  attr_accessible :content, :name, :title
 end
 </ruby>
 
-Možná vás překvapí, jak málo kódu obsahuje. Povšimněte si však, že třída +Post+ dědí od třídy +ActiveRecord::Base+. Active Record poskytuje modelům v Rails spoustu funkcionality: základní operace se záznamy v databázi (CRUD, _Create, Read, Update, Destroy_), validační logiku, stejně jako podporu pro složité dotazy do databáze nebo propojení mezi jednotlivými modely.
+Povšimněte si, že třída +Post+ dědí od třídy +ActiveRecord::Base+. Active Record poskytuje modelům v Rails spoustu funkcionality: základní operace se záznamy v databázi (CRUD, _Create, Read, Update, Destroy_), validační logiku, stejně jako podporu pro složité dotazy do databáze nebo propojení mezi jednotlivými modely.
+
+Další důležitou částí je řádek +attr_accessible :content, :name, :title+. Ten definuje atributy, které mohou být hromadně upraveny (např. prostřednictvím _update_attributes_).
 
 h4. Validační pravidla
 
@@ -456,6 +455,8 @@ Rails obsahují metody, které vám pomohou validovat data, která se modelu pos
 
 <ruby>
 class Post < ActiveRecord::Base
+  attr_accessible :content, :name, :title
+
   validates :name,  :presence => true
   validates :title, :presence => true,
                     :length => { :minimum => 5 }
@@ -507,7 +508,7 @@ def index
 
   respond_to do |format|
     format.html # index.html.erb
-    format.xml  { render :xml => @posts }
+    format.json { render json: @posts }
   end
 end
 </ruby>
@@ -518,7 +519,7 @@ TIP: Metoda +all+ odpovídá SQL dotaz +SELECT "posts".* FROM "posts"+. To si m�
 
 Kód mezi +do ... end+ se v Ruby nazývá „blok“ a často se používá podobně jako např. anonymní funkce v jQuery (+$.get('/ajax', function(data) { ... }+), které možná znáte lépe.
 
-Blok předaný metodě +respond_to+ zpracovává HTML a XML výstup akce +index+. Pokud načtete v prohlížeči stránku "http://localhost:3000/posts.xml":http://localhost:3000/posts.xml, uvidíte výpis příspěvků ve formátu XML.
+Blok předaný metodě +respond_to+ zpracovává HTML a JSON výstup akce +index+. Pokud načtete v prohlížeči stránku "http://localhost:3000/posts.json":http://localhost:3000/posts.json, uvidíte výpis příspěvků ve formátu JSON.
 
 Formát HTML automaticky hledá šablonu ve složce +app/views/posts/+ nazvanou stejně jako metoda, tedy +index+. Všechny instanční proměnné z kontroleru jsou v šabloně k dipozici. Pojďme se podívat na obsah šablony, tedy souboru +app/views/posts/index.html.erb+:
 
@@ -598,7 +599,7 @@ def new
 
   respond_to do |format|
     format.html # new.html.erb
-    format.xml  { render :xml => @post }
+    format.json { render json: @post }
   end
 end
 </ruby>
@@ -666,14 +667,11 @@ def create
 
   respond_to do |format|
     if @post.save
-      format.html { redirect_to(@post,
-                    :notice => 'Post was successfully created.') }
-      format.xml  { render :xml => @post,
-                    :status => :created, :location => @post }
+      format.html { redirect_to @post, notice: 'Post was successfully created.' }
+      format.json { render json: @post, status: :created, location: @post }
     else
-      format.html { render :action => "new" }
-      format.xml  { render :xml => @post.errors,
-                    :status => :unprocessable_entity }
+      format.html { render action: "new" }
+      format.json { render json: @post.errors, status: :unprocessable_entity }
     end
   end
 end
@@ -716,7 +714,7 @@ def show
 
   respond_to do |format|
     format.html # show.html.erb
-    format.xml  { render :xml => @post }
+    format.json { render json: @post }
   end
 end
 </ruby>
@@ -778,16 +776,14 @@ def update
 
   respond_to do |format|
     if @post.update_attributes(params[:post])
-      format.html { redirect_to(@post,
-                    :notice => 'Post was successfully updated.') }
-      format.xml  { head :ok }
+      format.html { redirect_to @post, notice: 'Post was successfully updated.' }
+      format.json { head :no_content }
     else
-      format.html { render :action => "edit" }
-      format.xml  { render :xml => @post.errors,
-                    :status => :unprocessable_entity }
+      format.html { render action: "edit" }
+      format.json { render json: @post.errors, status: :unprocessable_entity }
+    end
     end
   end
-end
 </ruby>
 
 Kontroler nejprve opět pomocí metody +find+ vyhledá v databázi příspěvek podle předaného +id+. Metodě +update_attributes+ — tu poskytuje modelům rovněž Active Record — předá všechny parametry týkající se příspevku, tedy +params[:post]+. Pokud vše dopadne dobře, příspěvek je v databázi aktualizován a prohlížeč je přesměrován na stránku s detailem příspěvku. Pokud došlo k chybám — typicky kvůli porušení validačních pravidel —, v prohlížeči je znovu zobrazena stránka s editačním formulářem.
@@ -802,8 +798,8 @@ def destroy
   @post.destroy
 
   respond_to do |format|
-    format.html { redirect_to(posts_url) }
-    format.xml  { head :ok }
+    format.html { redirect_to posts_url }
+    format.json { head :no_content }
   end
 end
 </ruby>
@@ -835,6 +831,7 @@ Nejdřív se podívejme na soubor +comment.rb+:
 <ruby>
 class Comment < ActiveRecord::Base
   belongs_to :post
+  attr_accessible :body, :commenter
 end
 </ruby>
 
@@ -844,7 +841,7 @@ Generátor vytvořil k modelu i migraci, která vytvoří tabulku +comments+ v d
 
 <ruby>
 class CreateComments < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :comments do |t|
       t.string :commenter
       t.text :body
@@ -852,10 +849,7 @@ class CreateComments < ActiveRecord::Migration
 
       t.timestamps
     end
-  end
-
-  def self.down
-    drop_table :comments
+    add_index :comments, :post_id
   end
 end
 </ruby>
@@ -886,6 +880,7 @@ V Rails zapíšete deklarace těchto vazeb velmi podobně:
 <ruby>
 class Comment < ActiveRecord::Base
   belongs_to :post
+  attr_accessible :body, :commenter
 end
 </ruby>
 
@@ -893,6 +888,8 @@ Tedy: _komentář patří k příspěvku_. Druhou stranu vazby, v modelu Post, b
 
 <ruby>
 class Post < ActiveRecord::Base
+  attr_accessible :content, :name, :title
+  
   validates :name,  :presence => true
   validates :title, :presence => true,
                     :length => { :minimum => 5 }
@@ -1232,6 +1229,8 @@ Rails nám umožňují nastavit mazání asociovaných objektů přímo při dek
 
 <ruby>
 class Post < ActiveRecord::Base
+  attr_accessible :content, :name, :title
+
   validates :name,  :presence => true
   validates :title, :presence => true,
                     :length => { :minimum => 5 }
@@ -1314,6 +1313,8 @@ Nyní musíme — stejně jako v případě komentářů — upravit i model Po
 
 <ruby>
 class Post < ActiveRecord::Base
+  attr_accessible :content, :name, :title, :tags_attributes
+
   validates :name,  :presence => true
   validates :title, :presence => true,
                     :length => { :minimum => 5 }
@@ -1327,6 +1328,8 @@ end
 </ruby>
 
 Volba +allow_destroy+ v deklaraci pro vnořené atributy říká Rails, že mají v šabloně, kterou za chvíli vytvoříme, zobrazit _checkbox_ pro odstranění štítku. Volba +reject_if+ zabrání uložení štítku, který má všechny atributy prázdné.
+
+Všimněte si také, že nesmíme zapomenout přidat _:tags_attributes_ do seznamu povolených +attr_accessible+. Bez toho by při pokusu o úpravu štítků z modelu Post docházelo k výjimce MassAssignmentSecurity.
 
 Nyní upravíme šablonu +views/posts/_form.html.erb+ tak, abychom mohli k příspěvku přidat štítky:
 
